@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../logic/login.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
@@ -27,7 +29,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(top: 20, bottom: 40),
+                      padding: EdgeInsets.only(bottom: 40),
                       child: Icon(Icons.adb, size: 80, color: Colors.white),
                     ),
                     Card(
@@ -40,9 +42,12 @@ class _LoginState extends State<Login> {
                         padding: const EdgeInsets.all(25),
                         child: Column(
                           children: [
-                            const Text(
+                            Text(
                               "Bienvenido",
-                              style: TextStyle(fontSize: 30),
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 30,
+                              ),
                             ),
                             Padding(
                               padding:
@@ -72,7 +77,9 @@ class _LoginState extends State<Login> {
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50))),
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  LogicaLogin().ValidarIngreso(context);
+                                },
                                 child: const Text(
                                   "Go",
                                   textAlign: TextAlign.center,
@@ -90,7 +97,25 @@ class _LoginState extends State<Login> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Text("Pié de página @", style: TextStyle(color: Colors.grey[300]),),
+            child: Text(
+              "Pié de página @",
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Ingresar como cliente >",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

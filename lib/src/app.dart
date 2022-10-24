@@ -1,7 +1,6 @@
-
+import 'package:cga/src/screens/home.dart';
 import 'package:cga/src/screens/login.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,7 +15,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Karla',
         primaryColor: const Color(0xFF2587C9),
       ),
-      home: const Login(),
+      initialRoute: "/login",
+      routes: {
+        "/home":(BuildContext context) => home(),
+        "/login":(BuildContext context) => Login()
+      },
     );
   }
 }
