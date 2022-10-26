@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../logic/login.dart';
+import '../printing/componentes.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
           Container(
             width: double.infinity,
             height: 560,
-            color: const Color(0xFF2587C9),
+            color: const Color(0xFF0080C4),
           ),
           Container(
             height: double.infinity,
@@ -28,9 +28,9 @@ class _LoginState extends State<Login> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 40),
-                      child: Icon(Icons.adb, size: 80, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: Image.asset('Asets/img/logo.png', width: 90, color: Colors.white,),
                     ),
                     Card(
                       margin: const EdgeInsets.symmetric(horizontal: 60),
@@ -45,8 +45,9 @@ class _LoginState extends State<Login> {
                             Text(
                               "Bienvenido",
                               style: TextStyle(
-                                color: Colors.grey[700],
+                                color: Colors.grey[500],
                                 fontSize: 30,
+                                fontFamily: 'Kabel',
                               ),
                             ),
                             Padding(
@@ -68,23 +69,9 @@ class _LoginState extends State<Login> {
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xFF2587C9)),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(50))),
-                              child: TextButton(
-                                onPressed: () {
-                                  LogicaLogin().ValidarIngreso(context);
-                                },
-                                child: const Text(
-                                  "Go",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                            ButtonCustom1(
+                              text: "GO",
+                              onTap: (){Navigator.of(context).pushReplacementNamed('/home');},
                             ),
                           ],
                         ),

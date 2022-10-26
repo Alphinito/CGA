@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 
-class home extends StatefulWidget {
-  const home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<home> createState() => _homeState();
+  State<Home> createState() => _HomeState();
 }
 
-class _homeState extends State<home> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color(0xFF2587C9),
+            backgroundColor: const Color(0xFF0080C4),
             elevation: 0,
             title: Row(
-              children: const [Icon(Icons.adb), Text(" CGA")],
+              children: [
+              Image.asset('Asets/img/logo.png', width: 35, color: Colors.white,),
+                const Text(
+                    " CGA",
+                  style: TextStyle(fontFamily: 'Kabel'),
+                )
+              ],
             ),
             actions: [
               IconButton(
@@ -32,9 +38,9 @@ class _homeState extends State<home> {
           ),
           body: TabBarView(children: [
             home_inicio(),
-            Icon(Icons.access_alarms_rounded),
-            Icon(Icons.add_chart),
-            Icon(Icons.add_call),
+            const Icon(Icons.access_alarms_rounded),
+            const Icon(Icons.add_chart),
+            const Icon(Icons.add_call),
           ])),
     );
   }

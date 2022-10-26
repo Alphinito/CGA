@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class LogicaLogin{
 
-  void ValidarIngreso(BuildContext context){
+  void x(BuildContext context){
     Navigator.of(context).pushReplacementNamed('/home');
   }
+
 }

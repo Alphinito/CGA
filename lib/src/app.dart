@@ -13,12 +13,13 @@ class MyApp extends StatelessWidget {
       title: 'CGA Aplication',
       theme: ThemeData(
         fontFamily: 'Karla',
-        primaryColor: const Color(0xFF2587C9),
+        primaryColor: const Color(0xFF0080C4
+        ),
       ),
       initialRoute: "/login",
       routes: {
-        "/home":(BuildContext context) => home(),
-        "/login":(BuildContext context) => Login()
+        "/home":(BuildContext context) => const Home(),
+        "/login":(BuildContext context) => const Login()
       },
     );
   }
