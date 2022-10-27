@@ -30,7 +30,11 @@ class _LoginState extends State<Login> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 40),
-                      child: Image.asset('Asets/img/logo.png', width: 90, color: Colors.white,),
+                      child: Image.asset(
+                        'Asets/img/logo.png',
+                        width: 90,
+                        color: Colors.white,
+                      ),
                     ),
                     Card(
                       margin: const EdgeInsets.symmetric(horizontal: 60),
@@ -71,7 +75,10 @@ class _LoginState extends State<Login> {
                             ),
                             ButtonCustom1(
                               text: "GO",
-                              onTap: (){Navigator.of(context).pushReplacementNamed('/home');},
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/home');
+                              },
                             ),
                           ],
                         ),
@@ -92,15 +99,14 @@ class _LoginState extends State<Login> {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  "Ingresar como cliente >",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+              padding: const EdgeInsets.only(top: 32,right: 15),
+              child: ButtonCustom1(
+                text: "Ingresar como cliente",
+                width: 120,
+                color: 0xFFFFFFFF,
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/clientView');
+                },
               ),
             ),
           ),
