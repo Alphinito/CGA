@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,7 +10,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List data = [];
+  Map usersData = {};
+  Geta() async {
+    print(
+        "xda-------------------------------------------------------------------------------------------------------------------------------------");
+    var response = await http.get(Uri.parse('http://10.0.2.2:9000/api'));
+    print(response.body);
+    data = json.decode(response.body);
+    print(
+        "xde-------------------------------------------------------------------------------------------------------------------------------------");
+    setState(() {
+      usersData = data[0];
+    });
+  }
+
   @override
+  void initState() {
+    super.initState();
+    print("xd");
+    Geta();
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
@@ -18,9 +41,13 @@ class _HomeState extends State<Home> {
             elevation: 0,
             title: Row(
               children: [
-              Image.asset('Asets/img/logo.png', width: 35, color: Colors.white,),
+                Image.asset(
+                  'Asets/img/logo.png',
+                  width: 35,
+                  color: Colors.white,
+                ),
                 const Text(
-                    " CGA",
+                  " CGA",
                   style: TextStyle(fontFamily: 'Kabel'),
                 )
               ],
@@ -52,12 +79,18 @@ class _HomeState extends State<Home> {
           Column(
             children: [
               Text(
-                "Dash board o centro de control",
+                "Get()",
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.grey[700],
                 ),
               ),
+              ListView.builder(
+                itemCount: 149,
+                itemBuilder: (BuildContext context, int index) {
+                  return Text(usersData['user_id']);
+                },
+              )
             ],
           ),
         ],
