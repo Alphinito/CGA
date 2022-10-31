@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,28 +11,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List data = [];
-  Map usersData = {};
-  Geta() async {
-    print(
-        "xda-------------------------------------------------------------------------------------------------------------------------------------");
-    var response = await http.get(Uri.parse('http://10.0.2.2:9000/api'));
-    print(response.body);
-    data = json.decode(response.body);
-    print(
-        "xde-------------------------------------------------------------------------------------------------------------------------------------");
-    setState(() {
-      usersData = data[0];
-    });
+
+  List<dynamic> _users = [];
+  bool _loading = false;
+  final _nombre = TextEditingController();
+  final _cargo = TextEditingController();
+  final headers = {"Content-Type": "application/json;charset=UTF-8"};
+
+  Get() async {
+    var res = await http.get(Uri.http("10.0.2.2:9000", "api"));
+    if (res.statusCode == 200) {
+      var jsonData = jsonDecode(res.body);
+      setState(() {
+        _users = jsonData;
+        _loading = false;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    print("xd");
-    Geta();
+    Get();
   }
 
+  //CONTENEDOR GENERAL HOME
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
@@ -57,44 +61,90 @@ class _HomeState extends State<Home> {
                   onPressed: () {}, icon: const Icon(Icons.portrait_outlined))
             ],
             bottom: const TabBar(tabs: [
-              Tab(icon: Icon(Icons.contact_mail_sharp)),
-              Tab(icon: Icon(Icons.access_alarms_rounded)),
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.receipt_long)),
               Tab(icon: Icon(Icons.add_chart)),
               Tab(icon: Icon(Icons.add_call))
             ]),
           ),
           body: TabBarView(children: [
             home_inicio(),
-            const Icon(Icons.access_alarms_rounded),
+            home_visitasForm(),
             const Icon(Icons.add_chart),
             const Icon(Icons.add_call),
           ])),
     );
   }
 
+  //HOME / INICIO
   home_inicio() {
     return Center(
       child: Stack(
         children: [
-          Column(
-            children: [
-              Text(
-                "Get()",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[700],
+          ListView(children: [
+            Column(
+              children: [
+                Text(
+                  "Get()",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[700],
+                  ),
                 ),
-              ),
-              ListView.builder(
-                itemCount: 149,
-                itemBuilder: (BuildContext context, int index) {
-                  return Text(usersData['user_id']);
-                },
-              )
-            ],
-          ),
+                _users.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _users.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              Text("Usuario: "),
+                              Column(
+                                children: [
+                                  Text(_users[index]['user_nombre']),
+                                  Text(_users[index]['user_cargo']),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : Container(
+                        child: Center(
+                            child: _loading
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text("Data not Found"),
+                                  )
+                                : CircularProgressIndicator()
+                        ),
+                      )
+              ],
+            ),
+          ]),
         ],
       ),
+    );
+  }
+
+  //HOME / INICIO
+  home_visitasForm(){
+    return Column(
+      children: [
+        TextFormField(
+          controller: _nombre,
+        ),
+        TextFormField(
+          controller: _cargo,
+        ),
+        ButtonCustom1(text: "Enviar", onTap: ()async{
+          final body = {"user_nombre": _nombre.text, "user_cargo": _cargo.text};
+          await http.post(Uri.http("10.0.2.2:9000", "api"), headers: headers, body: jsonEncode(body),);
+          _nombre.clear();
+          _cargo.clear();
+          Get();
+        })
+      ],
     );
   }
 }
