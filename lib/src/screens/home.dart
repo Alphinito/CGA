@@ -82,44 +82,40 @@ class _HomeState extends State<Home> {
       child: Stack(
         children: [
           ListView(children: [
-            Column(
-              children: [
-                Text(
-                  "Get()",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                _users.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _users.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            children: [
-                              Text("Usuario: "),
-                              Column(
-                                children: [
-                                  Text(_users[index]['user_nombre']),
-                                  Text(_users[index]['user_cargo']),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      )
-                    : Container(
-                        child: Center(
-                            child: _loading
-                                ? ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text("Data not Found"),
-                                  )
-                                : CircularProgressIndicator()
-                        ),
-                      )
-              ],
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Column(
+                children: [
+                  _users.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _users.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              children: [
+                                Text("Usuario: "),
+                                Column(
+                                  children: [
+                                    Text(_users[index]['user_nombre']),
+                                    Text(_users[index]['user_cargo']),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        )
+                      : Container(
+                          child: Center(
+                              child: _loading
+                                  ? ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text("Data not Found"),
+                                    )
+                                  : CircularProgressIndicator()
+                          ),
+                        )
+                ],
+              ),
             ),
           ]),
         ],

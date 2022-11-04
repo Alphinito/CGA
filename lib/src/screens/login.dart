@@ -9,6 +9,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final _clave = TextEditingController();
+  final _user = TextEditingController();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -60,11 +63,13 @@ class _LoginState extends State<Login> {
                               child: Column(
                                 children: [
                                   TextFormField(
+                                    controller: _user,
                                     decoration: const InputDecoration(
                                       labelText: "Usuario",
                                     ),
                                   ),
                                   TextFormField(
+                                    controller: _clave,
                                     decoration: const InputDecoration(
                                       labelText: "Clave",
                                     ),
@@ -76,8 +81,7 @@ class _LoginState extends State<Login> {
                             ButtonCustom1(
                               text: "GO",
                               onTap: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/home');
+                                x(context, _user.text, _clave.text);
                               },
                             ),
                           ],
