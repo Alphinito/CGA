@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../logic/login.dart';
 
-@immutable
 class ButtonCustom1 extends StatelessWidget {
   final String text;
   final int color;

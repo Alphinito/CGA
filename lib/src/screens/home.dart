@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cga/src/identidad/marca.dart';
 import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   List<dynamic> _users = [];
   bool _loading = false;
   final _nombre = TextEditingController();
@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   final headers = {"Content-Type": "application/json;charset=UTF-8"};
 
   Get() async {
-    var res = await http.get(Uri.http("10.0.2.2:9000", "api"));
+    var res = await http.get(Uri.http("10.0.2.2:9000", "log/1000810187/clave"));
     if (res.statusCode == 200) {
       var jsonData = jsonDecode(res.body);
       setState(() {
@@ -78,53 +78,48 @@ class _HomeState extends State<Home> {
 
   //HOME / INICIO
   home_inicio() {
-    return Center(
-      child: Stack(
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
         children: [
-          ListView(children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                children: [
-                  _users.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _users.length,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                Text("Usuario: "),
-                                Column(
-                                  children: [
-                                    Text(_users[index]['user_nombre']),
-                                    Text(_users[index]['user_cargo']),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        )
-                      : Container(
-                          child: Center(
-                              child: _loading
-                                  ? ElevatedButton(
-                                      onPressed: () {},
-                                      child: Text("Data not Found"),
-                                    )
-                                  : CircularProgressIndicator()
-                          ),
-                        )
-                ],
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                height: 150,
+                width: 150,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Color(identidadColor('Primario Azul'))),
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(150))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      '1',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),),
+                    Text(
+                        'Seguimientos faltantes',
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ]),
+              Container()
+            ],
+          )
         ],
       ),
     );
   }
 
   //HOME / INICIO
-  home_visitasForm(){
+  home_visitasForm() {
     return Column(
       children: [
         TextFormField(
@@ -133,13 +128,22 @@ class _HomeState extends State<Home> {
         TextFormField(
           controller: _cargo,
         ),
-        ButtonCustom1(text: "Enviar", onTap: ()async{
-          final body = {"user_nombre": _nombre.text, "user_cargo": _cargo.text};
-          await http.post(Uri.http("10.0.2.2:9000", "api"), headers: headers, body: jsonEncode(body),);
-          _nombre.clear();
-          _cargo.clear();
-          Get();
-        })
+        ButtonCustom1(
+            text: "Enviar",
+            onTap: () async {
+              final body = {
+                "user_nombre": _nombre.text,
+                "user_cargo": _cargo.text
+              };
+              await http.post(
+                Uri.http("10.0.2.2:9000", "api"),
+                headers: headers,
+                body: jsonEncode(body),
+              );
+              _nombre.clear();
+              _cargo.clear();
+              Get();
+            })
       ],
     );
   }

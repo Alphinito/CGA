@@ -2,6 +2,7 @@ import 'package:cga/src/screens/clientScreen.dart';
 import 'package:cga/src/screens/home.dart';
 import 'package:cga/src/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'identidad/marca.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,14 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'CGA Aplication',
       theme: ThemeData(
         fontFamily: 'Karla',
-        primaryColor: const Color(0xFF0080C4
-        ),
+        primaryColor: Color(identidadColor('Primario Azul')),
       ),
       initialRoute: "/login",
       routes: {
-        "/home":(BuildContext context) => const Home(),
-        "/login":(BuildContext context) => const Login(),
-        "/clientView":(BuildContext context) => const ClientView()
+        "/home": (BuildContext context) => const Home(),
+        "/login": (BuildContext context) => const Login(),
+        "/clientView": (BuildContext context) => const ClientView()
       },
     );
   }

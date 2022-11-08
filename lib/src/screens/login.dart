@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../identidad/marca.dart';
 import '../logic/login.dart';
 import '../printing/componentes.dart';
 
@@ -9,7 +10,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final _clave = TextEditingController();
   final _user = TextEditingController();
   // This widget is the root of your application.
@@ -21,7 +21,7 @@ class _LoginState extends State<Login> {
           Container(
             width: double.infinity,
             height: 560,
-            color: const Color(0xFF0080C4),
+            color: Color(identidadColor('Primario Azul')),
           ),
           Container(
             height: double.infinity,
@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
                     ),
                     Card(
                       margin: const EdgeInsets.symmetric(horizontal: 60),
-                      color: const Color(0xFFF5F5F5),
+                      color: Color(identidadColor('Veige')),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
@@ -70,6 +70,11 @@ class _LoginState extends State<Login> {
                                   ),
                                   TextFormField(
                                     controller: _clave,
+                                    validator: (value){
+                                      if(value != null){
+                                        return "Ingrese su clave";
+                                      }
+                                    },
                                     decoration: const InputDecoration(
                                       labelText: "Clave",
                                     ),
@@ -81,7 +86,7 @@ class _LoginState extends State<Login> {
                             ButtonCustom1(
                               text: "GO",
                               onTap: () {
-                                x(context, _user.text, _clave.text);
+                                validacionLogin(context, _user.text, _clave.text);
                               },
                             ),
                           ],
@@ -103,13 +108,14 @@ class _LoginState extends State<Login> {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: const EdgeInsets.only(top: 32,right: 15),
+              padding: const EdgeInsets.only(top: 32, right: 15),
               child: ButtonCustom1(
                 text: "Ingresar como cliente",
                 width: 120,
                 color: 0xFFFFFFFF,
                 onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/clientView');
+                  const SnackBar(content: Text("ERROR"));
+                  //Navigator.of(context).pushReplacementNamed('/clientView');
                 },
               ),
             ),
