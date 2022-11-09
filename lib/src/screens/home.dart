@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:cga/src/identidad/marca.dart';
-import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'HomeFormsView.dart';
+import 'HomePageView.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -68,83 +68,11 @@ class _HomeState extends State<Home> {
             ]),
           ),
           body: TabBarView(children: [
-            home_inicio(),
-            home_visitasForm(),
+            HomePageView(),
+            HomeFormsView(),
             const Icon(Icons.add_chart),
             const Icon(Icons.add_call),
           ])),
-    );
-  }
-
-  //HOME / INICIO
-  home_inicio() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Color(identidadColor('Primario Azul'))),
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(150))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      '1',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                    ),),
-                    Text(
-                        'Seguimientos faltantes',
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-              ),
-              Container()
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  //HOME / INICIO
-  home_visitasForm() {
-    return Column(
-      children: [
-        TextFormField(
-          controller: _nombre,
-        ),
-        TextFormField(
-          controller: _cargo,
-        ),
-        ButtonCustom1(
-            text: "Enviar",
-            onTap: () async {
-              final body = {
-                "user_nombre": _nombre.text,
-                "user_cargo": _cargo.text
-              };
-              await http.post(
-                Uri.http("10.0.2.2:9000", "api"),
-                headers: headers,
-                body: jsonEncode(body),
-              );
-              _nombre.clear();
-              _cargo.clear();
-              Get();
-            })
-      ],
     );
   }
 }
