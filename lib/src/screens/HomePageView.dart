@@ -23,7 +23,7 @@ class HomePageView extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(identidadMedidas('Pading')),
+          padding: EdgeInsets.all(identidadMedidas(context,'Pading')),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

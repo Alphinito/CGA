@@ -18,12 +18,18 @@ identidadColor(color){
 }
 
 
-identidadMedidas(medida){
+identidadMedidas(context, medida){
   double pading;
   double margin;
+  double width = MediaQuery.of(context).size.width;
+  double height = MediaQuery.of(context).size.height;
   if(medida == 'Pading'){
     return pading = 22;
   }else if(medida == 'Margin'){
     return margin = 22;
+  }else if(medida == 'Height'){
+    return height;
+  }else if(medida == 'Width'){
+    return width;
   }
 }

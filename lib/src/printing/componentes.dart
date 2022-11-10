@@ -89,37 +89,26 @@ class IndPreviewVisitas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 280,
-      padding: const EdgeInsets.all(10),
+      width: identidadMedidas(context, 'Width') * 0.9,
       decoration: BoxDecoration(
-          color: Color(identidadColor('Primari Azul')),
+        color: Color(identidadColor('Primari Azul')),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 0.5,
             blurRadius: 0.5,
-            offset: Offset(2, 0),
+            offset: const Offset(2, 0),
           )
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                nombreCliente,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              Text(nombreEmpresa)
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [Text(Fecha), Text(Hora)],
-          )
-        ],
+      child: ListTile(
+        title: Text(nombreCliente),
+        subtitle: Text(nombreEmpresa),
+        trailing: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(Fecha, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),), Text(Hora, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic))],
+        ),
       ),
     );
   }
@@ -137,52 +126,87 @@ class ContPreviewVisitasProgramadas extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(identidadMedidas('Pading')),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title),
-          const SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-                color: Color(identidadColor('Primario Azul')),
-                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IndPreviewVisitas(
-                        nombreCliente: 'Miguel Angel Herrera',
-                        nombreEmpresa: 'IBM Latam',
-                        Fecha: 'Martes 12',
-                        Hora: '12:30'),
-                    IndPreviewVisitas(
-                        nombreCliente: 'Angelica Mora',
-                        nombreEmpresa: 'IBM Latam',
-                        Fecha: 'Martes 12',
-                        Hora: '12:30'),
-                    IndPreviewVisitas(
-                        nombreCliente: 'Samantha Montenegro',
-                        nombreEmpresa: 'IBM Latam',
-                        Fecha: 'Martes 12',
-                        Hora: '12:30'),
-                  ],
-                ),
-                ButtonCustom2(
-                  onTap: onTap,
-                  iconn: const Icon(Icons.add),
-                  buttonColor: identidadColor('Primario Azul'),
-                  width: 65,
-                  height: 65,
-                )
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+              top: identidadMedidas(context, 'Pading') * 2,
+              left: 10,
+              bottom: 10),
+          child: Text(
+            title,
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            color: Color(identidadColor('Primario Azul')),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IndPreviewVisitas(
+                      nombreCliente: 'Miguel Angel Herrera',
+                      nombreEmpresa: 'IBM Latam',
+                      Fecha: 'Martes 12',
+                      Hora: '12:30'),
+                  IndPreviewVisitas(
+                      nombreCliente: 'Angelica Mora',
+                      nombreEmpresa: 'IBM Latam',
+                      Fecha: 'Martes 12',
+                      Hora: '12:30'),
+                  IndPreviewVisitas(
+                      nombreCliente: 'Samantha Montenegro',
+                      nombreEmpresa: 'IBM Latam',
+                      Fecha: 'Martes 12',
+                      Hora: '12:30'),
+                ],
+              ),
+              ButtonCustom2(
+                onTap: onTap,
+                iconn: const Icon(Icons.add),
+                buttonColor: identidadColor('Primario Azul'),
+                width: identidadMedidas(context, 'Width') * 0.1,
+                height: 65,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+//-----------------------------------------------------------------------------|INDICADORES DE AVANCE
+class indicadoresDeAvance extends StatelessWidget {
+  colorReturn(status) {
+    if (status == 'Activo') {
+      return Color(identidadColor('Primario Azul'));
+    } else {
+      return Colors.transparent;
+    }
+  }
+
+  final String status;
+  indicadoresDeAvance({
+    super.key,
+    required this.status,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(5),
+      height: 8,
+      width: 8,
+      decoration: BoxDecoration(
+          color: colorReturn(status),
+          border: Border.all(color: Color(identidadColor('Primario Azul'))),
+          borderRadius: const BorderRadius.all(Radius.circular(80))),
     );
   }
 }
