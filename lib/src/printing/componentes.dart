@@ -102,12 +102,15 @@ class IndPreviewVisitas extends StatelessWidget {
         ],
       ),
       child: ListTile(
+        key: Key(nombreEmpresa),
         title: Text(nombreCliente),
         subtitle: Text(nombreEmpresa),
+        onTap: (){print(key);},
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text(Fecha, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),), Text(Hora, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic))],
+
         ),
       ),
     );

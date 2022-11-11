@@ -15,10 +15,39 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
   int _selectedIndexF2 = 0;
   int _selectedIndexF3 = 0;
   int _selectedIndexF4 = 0;
+  var _currentSelectedTimeInicio = TimeOfDay.now();
+  var _currentSelectedTimeFin = TimeOfDay.now();
   String _statusP1 = '';
   String _statusP2 = '';
   String _statusP3 = '';
   String _statusP4 = '';
+
+  GetTimePikerWiguet(Guarda) {
+    return showTimePicker(
+        context: context,
+        initialTime: Guarda,
+        builder: (BuildContext context, Widget? child) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        });
+  }
+
+  void callTimePiker(InicioFin) async {
+    if (InicioFin == 'inicio') {
+      var selectedTime = await GetTimePikerWiguet(_currentSelectedTimeInicio);
+      setState(() {
+        _currentSelectedTimeInicio = selectedTime;
+      });
+    } else {
+      var selectedTime = await GetTimePikerWiguet(_currentSelectedTimeFin);
+      setState(() {
+        _currentSelectedTimeFin = selectedTime;
+      });
+    }
+  }
+
   @override
   //CONTENEDOR GENERAL HOME
   Widget build(BuildContext context) {
@@ -53,9 +82,15 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                       alignment: Alignment.topRight,
                       child: Container(
                         width: identidadMedidas(context, 'Width'),
-                        padding: EdgeInsets.symmetric(horizontal: identidadMedidas(context, 'Pading'), vertical: 5),
-                        color: Color(identidadColor('Primario Azul')),
-                        child: Text('Cliente', style: TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.italic),),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: identidadMedidas(context, 'Pading'),
+                            vertical: 5),
+                        color: Color(identidadColor('f9f9f9')),
+                        child: Text(
+                          'Cliente',
+                          style: TextStyle(
+                              fontSize: 18, fontStyle: FontStyle.italic),
+                        ),
                       ),
                     ),
                   ],
@@ -94,8 +129,52 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                         },
                       );
                     }),
-                Container(
-                  color: Color(identidadColor('Verde')),
+                ListView(
+                  children: [
+                    CalendarDatePicker(
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2021),
+                      lastDate: DateTime(2023),
+                      onDateChanged: (date) {},
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(
+                              identidadMedidas(context, 'Pading')),
+                          width: identidadMedidas(context, 'Width') * 0.5,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                callTimePiker('inicio');
+                              },
+                              child: Text('Hora Inicio')),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(
+                              identidadMedidas(context, 'Pading')),
+                          width: identidadMedidas(context, 'Width') * 0.5,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                callTimePiker('fin');
+                              },
+                              child: Text('Hora Fin')),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.all(identidadMedidas(context, 'Pading')),
+                      padding: EdgeInsets.symmetric(horizontal: identidadMedidas(context, 'Pading') * 0.5),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(identidadColor('Primario Azul')),
+                          ),
+                          color: Color(identidadColor('Gris'))),
+                      child: TextFormField(
+                        maxLines: 5,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
