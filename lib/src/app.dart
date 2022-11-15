@@ -1,5 +1,6 @@
 import 'package:cga/src/screens/clientScreen.dart';
-import 'package:cga/src/screens/formProgramarVisitsa.dart';
+import 'package:cga/src/screens/formProgramarVisitas.dart';
+import 'package:cga/src/screens/formProgramarVisitsaBeta.dart';
 import 'package:cga/src/screens/home.dart';
 import 'package:cga/src/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Karla',
         primaryColor: Color(identidadColor('Primario Azul')),
       ),
-      //initialRoute: "/login",
-      initialRoute: "/home",
+      initialRoute: "/login",
+      //initialRoute: "/home",
       routes: {
         "/home": (BuildContext context) => const Home(),
         "/login": (BuildContext context) => const Login(),

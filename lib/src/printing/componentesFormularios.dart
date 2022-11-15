@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../identidad/marca.dart';
+import '../data/globals.dart' as globals;
 
 //-----------------------------------------------------------------------------|INDICADORES DE AVANCE PARA FORMULARIOS
 class indicadoresDeAvance extends StatelessWidget {
@@ -34,7 +35,7 @@ class indicadoresDeAvance extends StatelessWidget {
 class ContenedorDeFormulario extends StatefulWidget {
 
   final List<Widget> contentSteps;
-  final List variablesDeEstadoParaIndicadores;
+  List variablesDeEstadoParaIndicadores;
   ContenedorDeFormulario({
     super.key,
     required this.contentSteps,
@@ -100,6 +101,10 @@ class Steps extends StatefulWidget {
     this.statusP1 = ''
   });
 
+  xdotravez(){
+    return statusP1;
+  }
+
   @override
   State<Steps> createState() => _StepsState();
 }
@@ -121,7 +126,8 @@ class _StepsState extends State<Steps> {
                 onTap: () {
                   setState(() {
                     widget._selectedIndexF1 = indexF1;
-                    widget.statusP1 = 'Activo';
+                    globals.IndicatorStatus1 = 'Activo';
+                    widget.xdotravez();
                   });
                 },
               );
