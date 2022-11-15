@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../identidad/marca.dart';
 
-//-----------------------------------------------------------------------------|BUTTON CUSTOM 1
+//-----------------------------------------------------------------------------|BUTTON CUSTOM 1 (TEXT)
 class ButtonCustom1 extends StatelessWidget {
   final String text;
   final int color;
@@ -37,7 +37,7 @@ class ButtonCustom1 extends StatelessWidget {
   }
 }
 
-//-----------------------------------------------------------------------------|BUTTON CUSTOM 2
+//-----------------------------------------------------------------------------|BUTTON CUSTOM 2 (ICON)
 class ButtonCustom2 extends StatelessWidget {
   final Widget iconn;
   final int buttonColor;
@@ -185,31 +185,4 @@ class ContPreviewVisitasProgramadas extends StatelessWidget {
   }
 }
 
-//-----------------------------------------------------------------------------|INDICADORES DE AVANCE
-class indicadoresDeAvance extends StatelessWidget {
-  colorReturn(status) {
-    if (status == 'Activo') {
-      return Color(identidadColor('Primario Azul'));
-    } else {
-      return Colors.transparent;
-    }
-  }
 
-  final String status;
-  indicadoresDeAvance({
-    super.key,
-    required this.status,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5),
-      height: 8,
-      width: 8,
-      decoration: BoxDecoration(
-          color: colorReturn(status),
-          border: Border.all(color: Color(identidadColor('Primario Azul'))),
-          borderRadius: const BorderRadius.all(Radius.circular(80))),
-    );
-  }
-}
