@@ -36,10 +36,12 @@ class ContenedorDeFormulario extends StatefulWidget {
 
   final List<Widget> contentSteps;
   List variablesDeEstadoParaIndicadores;
+  String title;
   ContenedorDeFormulario({
     super.key,
     required this.contentSteps,
     required this.variablesDeEstadoParaIndicadores,
+    required this.title,
   });
 
   @override
@@ -65,7 +67,7 @@ class _ContenedorDeFormularioState extends State<ContenedorDeFormulario> {
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
-                  Text('Crear visita', style: TextStyle(fontSize: 18)),
+                  Text(widget.title, style: TextStyle(fontSize: 18)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -126,7 +128,7 @@ class _StepsState extends State<Steps> {
                 onTap: () {
                   setState(() {
                     widget._selectedIndexF1 = indexF1;
-                    globals.IndicatorStatus1 = 'Activo';
+                    widget.statusP1 = 'Activo';
                     widget.xdotravez();
                   });
                 },

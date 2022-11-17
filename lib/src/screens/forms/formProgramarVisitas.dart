@@ -1,8 +1,12 @@
 import 'package:cga/src/identidad/marca.dart';
 import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
-import '../logic/formProgramarVisita.dart';
-import '../printing/componentesFormularios.dart';
+import '../../logic/formProgramarVisita.dart';
+import '../../printing/componentesFormularios.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../../responses/status.dart';
 
 class FormProgramarVisita extends StatefulWidget {
   const FormProgramarVisita({Key? key}) : super(key: key);
@@ -13,19 +17,50 @@ class FormProgramarVisita extends StatefulWidget {
 
 class _FormProgramarVisitaState extends State<FormProgramarVisita> {
 
+  //----------------------------------------------------------------------------|Obtención de datos
+  List<dynamic> _clientes = [];
+  List<dynamic> _motivos = [];
+  bool _loading = true;
+
+  Get() async {
+    try{
+      var res = await http.get(Uri.http("10.0.2.2:9000", "clientes"));
+      if (res.statusCode == 200) {
+        var jsonData = jsonDecode(res.body);
+        setState(() {
+          _clientes = jsonData;
+          _loading = false;
+        });
+      }
+    }catch(err){
+      respuesta(context, 'error', 'Error!', '$err');
+    }
+
+    try{
+      var res2 = await http.get(Uri.http("10.0.2.2:9000", "motivo"));
+      if (res2.statusCode == 200) {
+        var jsonData = jsonDecode(res2.body);
+        setState(() {
+          _motivos = jsonData;
+          _loading = false;
+        });
+      }
+    }catch(err){
+      respuesta(context, 'error', 'Error!', '$err');
+    }
+
+  }
+  //----------------------------------------------------------------------------|Variables de Status
   int _selectedIndexF1 = 0;
-  int _selectedIndexF2 = 0;
   int _selectedIndexF3 = 0;
   //int _selectedIndexF4 = 0;
 
   String _statusP1 = '';
-  String _statusP2 = '';
   String _statusP3 = '';
   String _statusP4 = '';
-
+  //----------------------------------------------------------------------------|Date y Time configuration
   var _currentSelectedTimeInicio = TimeOfDay.now();
   var _currentSelectedTimeFin = TimeOfDay.now();
-
   GetTimePikerWiguet(Guarda, TextoDeAyuda) {
     return showTimePicker(
         context: context,
@@ -40,7 +75,6 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
           );
         });
   }
-
   void callTimePiker(InicioFin) async {
     if (InicioFin == 'inicio') {
       var selectedTime = await GetTimePikerWiguet(_currentSelectedTimeInicio, 'Hora de inicio');
@@ -54,18 +88,21 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
       });
     }
   }
-
   //----------------------------------------------------------------------------| Variables de Almacenamineto de datos
-
-  String setNombre = '';
-  String setMotivo = '';
+  int setCliente = 0;
+  int setMotivo = 0;
   DateTime setFecha = DateTime.now();
   TimeOfDay setHoraInicio = TimeOfDay.now();
   TimeOfDay setHoraFin = TimeOfDay.now();
-  String setObservacion = '';
+  final _detalle = TextEditingController();
+  //----------------------------------------------------------------------------|
 
 
-
+  @override
+  void initState() {
+    super.initState();
+    Get();
+  }
   @override
   //CONTENEDOR GENERAL HOME
   Widget build(BuildContext context) {
@@ -79,25 +116,29 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
               children: [
                 Stack(
                   children: [
-                    ListView.builder(
-                        itemCount: 15,
+                    _clientes.isNotEmpty
+                    ?ListView.builder(
+                        itemCount: _clientes.length,
                         itemBuilder: (BuildContext context, int indexF1) {
                           return ListTile(
-                            title: Text('Nombre cliente $indexF1'),
-                            subtitle: Text('Empresa'),
-                            trailing: Icon(Icons.add),
+                            title: Text(_clientes[indexF1]['CLI_NOMBRE']),
+                            subtitle: Text('NIT: ${_clientes[indexF1]['CLI_NIT']}'),
+                            trailing: const Icon(Icons.add),
                             selectedTileColor: Color(identidadColor('Gris')),
                             selected: indexF1 == _selectedIndexF1,
                             onTap: () {
                               setState(() {
                                 _selectedIndexF1 = indexF1;
                                 _statusP1 = 'Activo';
-                                setNombre = indexF1.toString();
+                                setCliente = _clientes[indexF1]['CLI_ID'];
                               });
-                              print(setNombre);
                             },
                           );
-                        }),
+                        })
+                    :Container(
+                      color: Color(identidadColor('Rojo')),
+                      child: const Text('NO HAY CLIENTES PARA MOSTRAR'),
+                    ),
                     Align(
                       alignment: Alignment.topRight,
                       child: Container(
@@ -106,7 +147,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                             horizontal: identidadMedidas(context, 'Pading'),
                             vertical: 5),
                         color: Color(identidadColor('f9f9f9')),
-                        child: Text(
+                        child: const Text(
                           'Cliente',
                           style: TextStyle(
                               fontSize: 18, fontStyle: FontStyle.italic),
@@ -115,40 +156,47 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                     ),
                   ],
                 ),
-                ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (BuildContext context, int indexF2) {
-                      return ListTile(
-                        title: Text('Clase de contacto $indexF2'),
-                        subtitle: Text('Textro explicativo'),
-                        trailing: Icon(Icons.add),
-                        selectedTileColor: Color(identidadColor('Gris')),
-                        selected: indexF2 == _selectedIndexF2,
-                        onTap: () {
-                          setState(() {
-                            _selectedIndexF2 = indexF2;
-                            _statusP2 = 'Activo';
-                          });
-                        },
-                      );
-                    }),
-                ListView.builder(
-                    itemCount: 9,
-                    itemBuilder: (BuildContext context, int indexF3) {
-                      return ListTile(
-                        title: Text('Motivo de contacto $indexF3'),
-                        subtitle: Text('Texto explicativo'),
-                        trailing: Icon(Icons.add),
-                        selectedTileColor: Color(identidadColor('Gris')),
-                        selected: indexF3 == _selectedIndexF3,
-                        onTap: () {
-                          setState(() {
-                            _selectedIndexF3 = indexF3;
-                            _statusP3 = 'Activo';
-                          });
-                        },
-                      );
-                    }),
+                Stack(
+                  children: [
+                    _motivos.isNotEmpty
+                    ?ListView.builder(
+                        itemCount: _motivos.length,
+                        itemBuilder: (BuildContext context, int indexF3) {
+                          return ListTile(
+                            title: Text(_motivos[indexF3]['MOT_MOTIVO']),
+                            trailing: const Icon(Icons.add),
+                            selectedTileColor: Color(identidadColor('Gris')),
+                            selected: indexF3 == _selectedIndexF3,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndexF3 = indexF3;
+                                _statusP3 = 'Activo';
+                                setMotivo = _motivos[indexF3]['MOT_ID'];
+                              });
+                            },
+                          );
+                        })
+                    :Container(
+                      color: Color(identidadColor('Rojo')),
+                      child: const Text('NO HAY MOTIVOS PARA MOSTRAR'),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        width: identidadMedidas(context, 'Width'),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: identidadMedidas(context, 'Pading'),
+                            vertical: 5),
+                        color: Color(identidadColor('f9f9f9')),
+                        child: const Text(
+                          'Motivo de contacto',
+                          style: TextStyle(
+                              fontSize: 18, fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 ListView(//---------------------------------------------------##|STEP 4 (Fecha y Observación)
                   children: [
                     CalendarDatePicker(
@@ -170,7 +218,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                           width: identidadMedidas(context, 'Width') * 0.5,
                           child: Column(
                             children: [
-                              Text('Hora de inicio'),
+                              const Text('Hora de inicio'),
                               ElevatedButton(
                                   onPressed: () {
                                     callTimePiker('inicio');
@@ -189,7 +237,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                           width: identidadMedidas(context, 'Width') * 0.5,
                           child: Column(
                             children: [
-                              Text('Hora fin'),
+                              const Text('Hora fin'),
                               ElevatedButton(
                                   onPressed: () {
                                     callTimePiker('fin');
@@ -214,6 +262,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                           ),
                           color: Color(identidadColor('Gris'))),
                       child: TextFormField(
+                        controller: _detalle,
                         maxLines: 4,
                       ),
                     )
@@ -228,12 +277,11 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
-                  Text('Crear visita', style: TextStyle(fontSize: 18)),
+                  const Text('Programar visita', style: TextStyle(fontSize: 18)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       indicadoresDeAvance(status: _statusP1),
-                      indicadoresDeAvance(status: _statusP2),
                       indicadoresDeAvance(status: _statusP3),
                       indicadoresDeAvance(status: _statusP4),
                     ],
@@ -246,7 +294,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
             padding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: ButtonCustom1(text: 'SAVE', onTap: (){enviarDatosDeFormulario(context,setNombre,setMotivo,setFecha,setHoraInicio.format(context),setHoraFin.format(context),setObservacion);}, width: 100),
+              child: ButtonCustom1(text: 'SAVE', onTap: (){enviarDatosDeFormulario(context,setCliente,setMotivo,setFecha,setHoraInicio.format(context),setHoraFin.format(context),_detalle.text);}, width: 100),
             ),
           )
         ],

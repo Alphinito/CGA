@@ -102,15 +102,24 @@ class IndPreviewVisitas extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        key: Key(nombreEmpresa),
         title: Text(nombreCliente),
         subtitle: Text(nombreEmpresa),
-        onTap: (){print(key);},
+        onTap: () {
+          print(key);
+        },
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(Fecha, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),), Text(Hora, style: const TextStyle(fontWeight: FontWeight.w100, fontStyle: FontStyle.italic))],
-
+          children: [
+            Text(
+              Fecha,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),
+            ),
+            Text(Hora,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w100, fontStyle: FontStyle.italic))
+          ],
         ),
       ),
     );
@@ -118,15 +127,29 @@ class IndPreviewVisitas extends StatelessWidget {
 }
 
 //-----------------------------------------------------------------------------|PREVIEW VISITAS PROGRAMADAS
-class ContPreviewVisitasProgramadas extends StatelessWidget {
+class ContPreviewVisitasProgramadas extends StatefulWidget {
   final String title;
-  VoidCallback onTap;
+  VoidCallback onTapAdd;
+  VoidCallback onTapList;
+  List getDataList;
+  List params;
 
   ContPreviewVisitasProgramadas({
     super.key,
     required this.title,
-    required this.onTap,
+    required this.onTapAdd,
+    required this.onTapList,
+    required this.getDataList,
+    required this.params,
   });
+
+  @override
+  State<ContPreviewVisitasProgramadas> createState() =>
+      _ContPreviewVisitasProgramadasState();
+}
+
+class _ContPreviewVisitasProgramadasState
+    extends State<ContPreviewVisitasProgramadas> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -138,44 +161,60 @@ class ContPreviewVisitasProgramadas extends StatelessWidget {
               left: 10,
               bottom: 10),
           child: Text(
-            title,
+            widget.title,
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
-            color: Color(identidadColor('Primario Azul')),
+            color: Color(identidadColor('Blanco')),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IndPreviewVisitas(
-                      nombreCliente: 'Miguel Angel Herrera',
-                      nombreEmpresa: 'IBM Latam',
-                      Fecha: 'Martes 12',
-                      Hora: '12:30'),
-                  IndPreviewVisitas(
-                      nombreCliente: 'Angelica Mora',
-                      nombreEmpresa: 'IBM Latam',
-                      Fecha: 'Martes 12',
-                      Hora: '12:30'),
-                  IndPreviewVisitas(
-                      nombreCliente: 'Samantha Montenegro',
-                      nombreEmpresa: 'IBM Latam',
-                      Fecha: 'Martes 12',
-                      Hora: '12:30'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IndPreviewVisitas(
+                          nombreCliente: widget.getDataList[0][widget.params[0]],
+                          nombreEmpresa: widget.getDataList[0][widget.params[1]],
+                          Fecha: widget.getDataList[0][widget.params[2]],
+                          Hora: widget.getDataList[0][widget.params[3]]
+                      ),
+                      IndPreviewVisitas(
+                          nombreCliente: widget.getDataList[1][widget.params[0]],
+                          nombreEmpresa: widget.getDataList[1][widget.params[1]],
+                          Fecha: widget.getDataList[1][widget.params[2]],
+                          Hora: widget.getDataList[1][widget.params[3]]
+                      ),
+                      IndPreviewVisitas(
+                          nombreCliente: widget.getDataList[2][widget.params[0]],
+                          nombreEmpresa: widget.getDataList[2][widget.params[1]],
+                          Fecha: widget.getDataList[2][widget.params[2]],
+                          Hora: widget.getDataList[2][widget.params[3]]
+                      ),
+                    ],
+                  ),
+                  ButtonCustom2(
+                    onTap: widget.onTapAdd,
+                    iconn: const Icon(Icons.add),
+                    buttonColor: identidadColor('Primario Azul'),
+                    width: identidadMedidas(context, 'Width') * 0.1,
+                    height: 218,
+                  )
                 ],
               ),
-              ButtonCustom2(
-                onTap: onTap,
-                iconn: const Icon(Icons.add),
-                buttonColor: identidadColor('Primario Azul'),
-                width: identidadMedidas(context, 'Width') * 0.1,
-                height: 65,
+              Padding(
+                padding:
+                    EdgeInsets.all(identidadMedidas(context, 'Pading') * 0.5),
+                child: ButtonCustom2(
+                  iconn: const Icon(Icons.dehaze),
+                  onTap: widget.onTapList,
+                  radius: 50,
+                ),
               )
             ],
           ),
@@ -184,5 +223,3 @@ class ContPreviewVisitasProgramadas extends StatelessWidget {
     );
   }
 }
-
-

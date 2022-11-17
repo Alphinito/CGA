@@ -1,6 +1,6 @@
-import '../data/globals.dart' as globals;
+import '../../data/globals.dart' as globals;
 import 'package:flutter/material.dart';
-import '../printing/componentesFormularios.dart';
+import '../../printing/componentesFormularios.dart';
 
 class FormProgramarVisitaBeta extends StatefulWidget {
   const FormProgramarVisitaBeta({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisitaBeta> {
   Widget build(BuildContext context) {
     String IndicatorStatus1 = xsxd('status');
     print(IndicatorStatus1);
-    List<String> valuesStatus = [IndicatorStatus1,globals.IndicatorStatus2,globals.IndicatorStatus3];
-    return ContenedorDeFormulario(contentSteps: StepsList, variablesDeEstadoParaIndicadores: xd(valuesStatus));
+    List<String> valuesStatus = ['IndicatorStatus1','IndicatorStatus2','IndicatorStatus3'];
+    return ContenedorDeFormulario(title: 'hello', contentSteps: StepsList, variablesDeEstadoParaIndicadores: xd(valuesStatus));
   }
 }
