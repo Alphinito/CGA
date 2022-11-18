@@ -57,7 +57,7 @@ enviarDatosDeFormularioReal(context,cliente, motivo, fecha, hora, observacion) a
   try{
 
     //--------------------------------------------------------------------------|POST VISITA PLAN
-    apiGet(body,"form-visitas");
+    apiPOST(body,"form-visitas");
 
     //--------------------------------------------------------------------------|GET ID VISITA PLAN
     var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas/${globals.empId}"));
@@ -76,7 +76,7 @@ enviarDatosDeFormularioReal(context,cliente, motivo, fecha, hora, observacion) a
     };
 
     //--------------------------------------------------------------------------|POST VISITA REAL
-    apiGet(body2,"visitas-real");
+    apiPOST(body2,"visitas-real");
     //--------------------------------------------------------------------------|RESULTADO CORRECTO
     Navigator.pop(context);
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');

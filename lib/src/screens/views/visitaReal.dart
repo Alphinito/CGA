@@ -38,6 +38,6 @@ class _VisitaRealListViewState extends State<VisitaRealListView> {
   }
   @override
   Widget build(BuildContext context) {
-    return ContenedorListView(title: 'Visitas reales', onTap: (){}, visitasReales: visitasReales, params: const ['CLI_NOMBRE','MOT_MOTIVO','REA_FECHA','REA_HORA']);
+    return ContenedorListView(title: 'Visitas reales', visitasReales: visitasReales, params: const ['CLI_NOMBRE','MOT_MOTIVO','REA_FECHA','REA_HORA']);
   }
 }

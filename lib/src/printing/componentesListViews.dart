@@ -1,40 +1,205 @@
 import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
-
+import '../api/apiMethods.dart';
 import '../identidad/marca.dart';
+import '../responses/status.dart';
 
-DetalleObjet(context, text1, text2, text3) {
-  return showDialog(context: context, builder: (context)=> SimpleDialog(
-    title: Text(text1),
-    contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
-    children: [
-      SizedBox(height: 60, width: 321, child: Text(text2),),
-      SizedBox(height: 60, width: 321, child: Text(text2),),
-      SizedBox(height: 60, width: 321, child: Text(text3),),
-      SizedBox(height: 60, width: 321, child: Text(text3),),
-      Row(
+class CustomSizedBox1 extends StatelessWidget {
+  final String title;
+  final String value;
+
+  CustomSizedBox1({
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.dangerous)),
-          IconButton(onPressed: (){}, icon: Icon(Icons.dangerous)),
-          IconButton(onPressed: (){}, icon: Icon(Icons.dangerous)),
+          Text(
+            title,
+            style: const TextStyle(fontStyle: FontStyle.italic),
+          ),
+          Text(value)
         ],
       ),
-      ButtonCustom1(text: 'Cerrar', onTap: (){Navigator.of(context).pop();},width: 100)
-    ],
-  ) );
+    );
+  }
 }
 
+class CustomSizedBox2 extends StatelessWidget {
+  final String title;
+  final String value;
+
+  CustomSizedBox2({
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontStyle: FontStyle.italic),
+          ),
+          const SizedBox(height: 5),
+          Text(value)
+        ],
+      ),
+    );
+  }
+}
+
+planToReal(context, id) async {
+  //--------------------------------------------------------------|DATA TO SEND|
+  final body = {"VIS_REAL": 1};
+  final body2 = {
+    "REA_VIS": id,
+    "REA_DIRECTA": 0,
+    "REA_FECHA": "${DateTime.now()}",
+    "REA_HORA": "${TimeOfDay.now().format(context)}",
+  };
+
+  try {
+    //----------------------------------------------------------|SERVER REQUEST|
+    apiPUT(body, 'form-visitas/updateMAIN/$id');
+    apiPOST(body2,"visitas-real");
+    //---------------------------------------------------------------|RESULTADO|
+    Navigator.of(context).pop();
+    respuesta(context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
+  } catch (err) {
+    respuesta(context, 'error', 'Error!', '$err');
+  }
+}
+
+DetalleVisitasPlan(context, index, data) {
+  return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+            title: const Text('Detalle de visita programada'),
+            contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
+            children: [
+              CustomSizedBox1(
+                  title: 'ID:', value: data[index]['VIS_ID'].toString()),
+              CustomSizedBox1(
+                  title: 'Especialista:',
+                  value: data[index]['VIS_ESPECIALISTA'].toString()),
+              CustomSizedBox2(
+                  title: 'Cliente:',
+                  value: data[index]['CLI_NOMBRE'] +
+                      ' (SAP:' +
+                      data[index]['CLI_SAP'].toString() +
+                      ')'),
+              CustomSizedBox1(
+                  title: 'Motivo de contacto:',
+                  value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+              CustomSizedBox1(title: 'Fecha:', value: data[index]['VIS_FECHA']),
+              CustomSizedBox1(
+                  title: 'Hora inicio:', value: data[index]['VIS_HORA_INICIO']),
+              CustomSizedBox1(
+                  title: 'Hora fin:', value: data[index]['VIS_HORA_FIN']),
+              CustomSizedBox2(
+                  title: 'Observación:', value: data[index]['VIS_OBSERVACION']),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      ButtonCustom2(radius: 50, height: 40, width: 40,iconn: const Icon(Icons.import_export), onTap: (){planToReal(context, data[index]['VIS_ID']);}),
+                      const Text('Convertir a real')
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      ButtonCustom2(buttonColor: identidadColor('Rojo'),radius: 50, height: 40, width: 40,iconn: const Icon(Icons.cancel_outlined), onTap: (){}),
+                      const Text('Se canceló')
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 8),
+              ButtonCustom1(
+                  text: 'Cerrar',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  width: 100)
+            ],
+          ));
+}
+
+DetalleVisitasReal(context, index, data) {
+  return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Detalle de visita Real'),
+        contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
+        children: [
+          CustomSizedBox1(
+              title: 'ID:', value: data[index]['VIS_ID'].toString()),
+          CustomSizedBox1(
+              title: 'Especialista:',
+              value: data[index]['VIS_ESPECIALISTA'].toString()),
+          CustomSizedBox2(
+              title: 'Cliente:',
+              value: data[index]['CLI_NOMBRE'] +
+                  ' (SAP:' +
+                  data[index]['CLI_SAP'].toString() +
+                  ')'),
+          CustomSizedBox1(
+              title: 'Motivo de contacto:',
+              value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+          CustomSizedBox1(title: 'Fecha:', value: data[index]['REA_FECHA']),
+          CustomSizedBox1(
+              title: 'Hora:', value: data[index]['REA_HORA']),
+          CustomSizedBox2(
+              title: 'Observación:', value: data[index]['VIS_OBSERVACION']),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  ButtonCustom2(radius: 50, height: 40, width: 40,iconn: const Icon(Icons.fact_check_outlined), onTap: (){}),
+                  const Text('Seguimiento')
+                ],
+              ),
+              Column(
+                children: [
+                  ButtonCustom2(buttonColor: identidadColor('Rojo'),radius: 50, height: 40, width: 40,iconn: const Icon(Icons.cancel_outlined), onTap: (){}),
+                  const Text('Se canceló')
+                ],
+              )
+            ],
+          ),
+          const SizedBox(height: 8),
+          ButtonCustom1(
+              text: 'Cerrar',
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              width: 100)
+        ],
+      ));
+}
 
 class ContenedorListView extends StatefulWidget {
   final String title;
-  VoidCallback onTap;
   List visitasReales;
   List params;
 
   ContenedorListView({
     super.key,
     required this.title,
-    required this.onTap,
     required this.visitasReales,
     required this.params,
   });
@@ -78,8 +243,9 @@ class _ContenedorListViewState extends State<ContenedorListView> {
                     ),
                     selectedTileColor: Color(identidadColor('Gris')),
                     onTap: () {
-                      DetalleObjet(context, 'text1', 'text2', 'text3');
-                      setState(() {});
+                      widget.title == 'Visitas programadas'
+                          ? DetalleVisitasPlan(context, indexF1, widget.visitasReales)
+                          : DetalleVisitasReal(context, indexF1, widget.visitasReales);
                     },
                   );
                 }),

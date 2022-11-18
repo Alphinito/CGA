@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../identidad/marca.dart';
+import 'componentesListViews.dart';
 
 //-----------------------------------------------------------------------------|BUTTON CUSTOM 1 (TEXT)
 class ButtonCustom1 extends StatelessWidget {
@@ -74,17 +75,17 @@ class ButtonCustom2 extends StatelessWidget {
 
 //-----------------------------------------------------------------------------|VISTAS PREVIAS VISITAS
 class IndPreviewVisitas extends StatelessWidget {
-  final String nombreCliente;
-  final String nombreEmpresa;
-  final String Fecha;
-  final String Hora;
+  final List dataList;
+  final List params;
+  final int index;
+  final String tipoDeFormulario;
 
   IndPreviewVisitas({
     super.key,
-    required this.nombreCliente,
-    required this.nombreEmpresa,
-    required this.Fecha,
-    required this.Hora,
+    required this.dataList,
+    required this.params,
+    required this.index,
+    required this.tipoDeFormulario,
   });
   @override
   Widget build(BuildContext context) {
@@ -102,21 +103,29 @@ class IndPreviewVisitas extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        title: Text(nombreCliente),
-        subtitle: Text(nombreEmpresa),
+        title: Text(dataList[index][params[0]]),
+        subtitle: Text(dataList[index][params[1]].toString()),
+        selectedColor: Color(identidadColor('Gris')),
         onTap: () {
-          print(key);
+          tipoDeFormulario == 'Visita Plan'
+              ? DetalleVisitasPlan(context, index,dataList)
+              : tipoDeFormulario == 'Visita Real'
+                  ? DetalleVisitasReal(context, index,dataList)
+                  : tipoDeFormulario == ''
+                      ? DetalleVisitasPlan(
+                          context, index,dataList)
+                      : '';
         },
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              Fecha,
+              dataList[index][params[2]],
               style: const TextStyle(
                   fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),
             ),
-            Text(Hora,
+            Text(dataList[index][params[3]],
                 style: const TextStyle(
                     fontWeight: FontWeight.w100, fontStyle: FontStyle.italic))
           ],
@@ -133,6 +142,7 @@ class ContPreviewVisitasProgramadas extends StatefulWidget {
   VoidCallback onTapList;
   List getDataList;
   List params;
+  String tipoFormulario;
 
   ContPreviewVisitasProgramadas({
     super.key,
@@ -141,6 +151,7 @@ class ContPreviewVisitasProgramadas extends StatefulWidget {
     required this.onTapList,
     required this.getDataList,
     required this.params,
+    required this.tipoFormulario,
   });
 
   @override
@@ -175,29 +186,67 @@ class _ContPreviewVisitasProgramadasState
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IndPreviewVisitas(
-                          nombreCliente: widget.getDataList[0][widget.params[0]],
-                          nombreEmpresa: widget.getDataList[0][widget.params[1]],
-                          Fecha: widget.getDataList[0][widget.params[2]],
-                          Hora: widget.getDataList[0][widget.params[3]]
-                      ),
-                      IndPreviewVisitas(
-                          nombreCliente: widget.getDataList[1][widget.params[0]],
-                          nombreEmpresa: widget.getDataList[1][widget.params[1]],
-                          Fecha: widget.getDataList[1][widget.params[2]],
-                          Hora: widget.getDataList[1][widget.params[3]]
-                      ),
-                      IndPreviewVisitas(
-                          nombreCliente: widget.getDataList[2][widget.params[0]],
-                          nombreEmpresa: widget.getDataList[2][widget.params[1]],
-                          Fecha: widget.getDataList[2][widget.params[2]],
-                          Hora: widget.getDataList[2][widget.params[3]]
-                      ),
-                    ],
-                  ),
+                  widget.getDataList.length > 2
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IndPreviewVisitas(
+                              index: 0,
+                              dataList: widget.getDataList,
+                              params: widget.params,
+                              tipoDeFormulario: widget.tipoFormulario,
+                            ),
+                            IndPreviewVisitas(
+                              index: 1,
+                              dataList: widget.getDataList,
+                              params: widget.params,
+                              tipoDeFormulario: widget.tipoFormulario,
+                            ),
+                            IndPreviewVisitas(
+                              index: 2,
+                              dataList: widget.getDataList,
+                              params: widget.params,
+                              tipoDeFormulario: widget.tipoFormulario,
+                            ),
+                          ],
+                        )
+                      : widget.getDataList.length == 2
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                IndPreviewVisitas(
+                                  index: 0,
+                                  dataList: widget.getDataList,
+                                  params: widget.params,
+                                  tipoDeFormulario: widget.tipoFormulario,
+                                ),
+                                IndPreviewVisitas(
+                                  index: 1,
+                                  dataList: widget.getDataList,
+                                  params: widget.params,
+                                  tipoDeFormulario: widget.tipoFormulario,
+                                ),
+                              ],
+                            )
+                          : widget.getDataList.length == 1
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    IndPreviewVisitas(
+                                      index: 0,
+                                      dataList: widget.getDataList,
+                                      params: widget.params,
+                                      tipoDeFormulario: widget.tipoFormulario,
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                        'No hay datos para mostrar INSERTE VAL IMG')
+                                  ],
+                                ),
                   ButtonCustom2(
                     onTap: widget.onTapAdd,
                     iconn: const Icon(Icons.add),

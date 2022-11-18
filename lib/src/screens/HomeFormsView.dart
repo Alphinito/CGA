@@ -1,6 +1,7 @@
 import 'package:cga/src/identidad/marca.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import '../data/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import '../logic/formProgramarVisita.dart';
 import '../printing/componentes.dart';
@@ -19,11 +20,11 @@ class _HomeFormsViewState extends State<HomeFormsView> {
 
   GetVisitas3() async {
     try {//---------------------------------------------------------------------|GET VISITAS PLAN
-      var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas"));
+      var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas/list/${globals.empId}"));
       if (res.statusCode == 200) {
-        var jsonData = jsonDecode(res.body);
+        var jsonData1 = jsonDecode(res.body);
         setState(() {
-          Visitas = jsonData;
+          Visitas = jsonData1;
           _loading = false;
         });
       }
@@ -31,11 +32,11 @@ class _HomeFormsViewState extends State<HomeFormsView> {
       respuesta(context, 'error', 'Error!', '$err');
     }
     try {//---------------------------------------------------------------------|GET VISITAS REALES
-      var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas"));
+      var res = await http.get(Uri.http("10.0.2.2:9000", "visitas-real/list/${globals.empId}"));
       if (res.statusCode == 200) {
-        var jsonData = jsonDecode(res.body);
+        var jsonData2 = jsonDecode(res.body);
         setState(() {
-          VisitasReales = jsonData;
+          VisitasReales = jsonData2;
           _loading2 = false;
         });
       }
@@ -67,6 +68,7 @@ class _HomeFormsViewState extends State<HomeFormsView> {
               ),
             )
             : ContPreviewVisitasProgramadas(
+          tipoFormulario: 'Visita Plan',
                 title: 'Visitas programadas',
                 params: const ['CLI_NOMBRE','MOT_MOTIVO','VIS_FECHA','VIS_HORA_INICIO'],
                 onTapAdd: () {
@@ -90,15 +92,16 @@ class _HomeFormsViewState extends State<HomeFormsView> {
           ),
         )
             : ContPreviewVisitasProgramadas(
+            tipoFormulario: 'Visita Real',
             title: 'Visitas reales',
-            params: const ['CLI_NOMBRE','MOT_MOTIVO','VIS_FECHA','VIS_HORA_INICIO'],
+            params: const ['CLI_NOMBRE','MOT_MOTIVO','REA_FECHA','REA_HORA'],
             onTapAdd: () {
               irFormularioVisitaReal(context);
             },
             onTapList: () {
               irViewVisitaReal(context);
             },
-            getDataList: Visitas
+            getDataList: VisitasReales
         )
       ],
     );

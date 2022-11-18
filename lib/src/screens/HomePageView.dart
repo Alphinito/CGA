@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
-
+import '../api/apiMethods.dart';
 import '../identidad/marca.dart';
-import '../logic/login.dart';
+import '../data/globals.dart' as globals;
 
 //-----------------------------------------------------------------------------|BUTTON CUSTOM 1
-class HomePageView extends StatelessWidget {
-  // final String text;
-  // final int color;
-  // final double width, height;
-  // VoidCallback onTap;
-  //
-  // ButtonCustom1({
-  //   super.key,
-  //   required this.text,
-  //   required this.onTap,
-  //   this.color = 0xFF2587C9,
-  //   this.width = 50,
-  //   this.height = 50,
-  // });
+class HomePageView extends StatefulWidget {
+
+  @override
+  State<HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<HomePageView> {
+
+
+  String seguimientosFaltantes = '';
+  String visitasProgramadas = '';
+
+  setIndicators() async{
+    List dataListSeguimientos = await apiGET(context, 'visitas-real/list/${globals.empId}');
+    List dataListProgramadas = await apiGET(context, 'form-visitas/list/${globals.empId}');
+    setState(() {
+      seguimientosFaltantes = dataListSeguimientos.length.toString();
+      visitasProgramadas = dataListProgramadas.length.toString();
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    setIndicators();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,15 +50,15 @@ class HomePageView extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(150))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
-                      '1',
+                      seguimientosFaltantes,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Seguimientos faltantes',
                       textAlign: TextAlign.center,
                     )
@@ -74,16 +86,16 @@ class HomePageView extends StatelessWidget {
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('Visitas programadas'),
-                        SizedBox(height: 19),
+                      children: [
+                        const Text('Visitas programadas'),
+                        const SizedBox(height: 19),
                         Text(
-                          '8',
-                          style: TextStyle(
+                          visitasProgramadas,
+                          style: const TextStyle(
                             fontSize: 30,
                           ),
                         ),
-                        SizedBox(height: 19)
+                        const SizedBox(height: 19)
                       ],
                     ),
                     Row(
