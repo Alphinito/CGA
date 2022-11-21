@@ -31,7 +31,7 @@ enviarDatosDeFormulario(context,cliente, motivo, fecha, horaInicio, horaFin, obs
   };
   try{
     await http.post(
-      Uri.http("10.0.2.2:9000", "form-visitas"),
+      Uri.http(globals.linkAPI, "form-visitas"),
       headers: headers,
       body: jsonEncode(body),
     );
@@ -60,7 +60,7 @@ enviarDatosDeFormularioReal(context,cliente, motivo, fecha, hora, observacion) a
     apiPOST(body,"form-visitas");
 
     //--------------------------------------------------------------------------|GET ID VISITA PLAN
-    var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas/${globals.empId}"));
+    var res = await http.get(Uri.http(globals.linkAPI, "form-visitas/${globals.empId}"));
     if (res.statusCode == 200) {
       var jsonData = jsonDecode(res.body);
       idForm = jsonData;

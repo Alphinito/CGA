@@ -19,7 +19,7 @@ class _VisitaRealListViewState extends State<VisitaRealListView> {
 
   Get() async {
     try{
-      var res = await http.get(Uri.http("10.0.2.2:9000", "visitas-real/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         setState(() {

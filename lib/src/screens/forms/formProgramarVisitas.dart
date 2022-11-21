@@ -5,7 +5,7 @@ import '../../logic/formProgramarVisita.dart';
 import '../../printing/componentesFormularios.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import '../../data/globals.dart' as globals;
 import '../../responses/status.dart';
 
 class FormProgramarVisita extends StatefulWidget {
@@ -24,7 +24,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
 
   Get() async {
     try{
-      var res = await http.get(Uri.http("10.0.2.2:9000", "clientes"));
+      var res = await http.get(Uri.http(globals.linkAPI, "clientes"));
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         setState(() {
@@ -37,7 +37,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
     }
 
     try{
-      var res2 = await http.get(Uri.http("10.0.2.2:9000", "motivo"));
+      var res2 = await http.get(Uri.http(globals.linkAPI, "motivo"));
       if (res2.statusCode == 200) {
         var jsonData = jsonDecode(res2.body);
         setState(() {

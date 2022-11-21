@@ -1,5 +1,6 @@
 import 'package:cga/src/identidad/marca.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'dart:convert';
 import '../data/globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class _HomeFormsViewState extends State<HomeFormsView> {
 
   GetVisitas3() async {
     try {//---------------------------------------------------------------------|GET VISITAS PLAN
-      var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "form-visitas/list/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData1 = jsonDecode(res.body);
         setState(() {
@@ -32,7 +33,7 @@ class _HomeFormsViewState extends State<HomeFormsView> {
       respuesta(context, 'error', 'Error!', '$err');
     }
     try {//---------------------------------------------------------------------|GET VISITAS REALES
-      var res = await http.get(Uri.http("10.0.2.2:9000", "visitas-real/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData2 = jsonDecode(res.body);
         setState(() {
@@ -56,17 +57,8 @@ class _HomeFormsViewState extends State<HomeFormsView> {
     return ListView(
       children: [
         _loading
-            ? Container(
-              height: 88,
-              margin: EdgeInsets.all(150),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: CircularProgressIndicator(
-                    color: Color(identidadColor('Primario Azul')),
-                  backgroundColor: Color(identidadColor('Rojo')),
-                ),
-              ),
-            )
+            ? Lottie.asset('Asets/animations/loadingLine.json',
+                height: 350)
             : ContPreviewVisitasProgramadas(
           tipoFormulario: 'Visita Plan',
                 title: 'Visitas programadas',
@@ -80,17 +72,8 @@ class _HomeFormsViewState extends State<HomeFormsView> {
                 getDataList: Visitas
         ),
         _loading2
-            ? Container(
-          height: 88,
-          margin: EdgeInsets.all(150),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: CircularProgressIndicator(
-              color: Color(identidadColor('Primario Azul')),
-              backgroundColor: Color(identidadColor('Rojo')),
-            ),
-          ),
-        )
+            ? Lottie.asset('Asets/animations/loadingLine.json',
+            height: 350)
             : ContPreviewVisitasProgramadas(
             tipoFormulario: 'Visita Real',
             title: 'Visitas reales',

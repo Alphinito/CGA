@@ -19,7 +19,7 @@ class _VisitaPlanListViewState extends State<VisitaPlanListView> {
 
   Get() async {
     try{
-      var res = await http.get(Uri.http("10.0.2.2:9000", "form-visitas/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "form-visitas/list/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         setState(() {

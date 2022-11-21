@@ -7,7 +7,7 @@ import '../data/globals.dart' as globals;
 
 validacionLogin(context, us, cl) async {
   try {
-    var res = await http.get(Uri.http("10.0.2.2:9000", "log/$us/$cl"));
+    var res = await http.get(Uri.http(globals.linkAPI, "log/$us/$cl"));
     if (res.statusCode == 200) {
       if (res.body.length > 15) {
         var jsonData = jsonDecode(res.body);

@@ -1,12 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import '../data/globals.dart' as globals;
 import '../responses/status.dart';
 
 apiPOST(body, dir) async{
   final headers = {"Content-Type": "application/json;charset=UTF-8"};
   await http.post(
-    Uri.http("10.0.2.2:9000", "$dir"),
+    Uri.http(globals.linkAPI, "$dir"),
     headers: headers,
     body: jsonEncode(body),
   );
@@ -15,7 +15,7 @@ apiPOST(body, dir) async{
 apiPUT(body, dir) async{
   final headers = {"Content-Type": "application/json;charset=UTF-8"};
   await http.put(
-    Uri.http("10.0.2.2:9000", "$dir"),
+    Uri.http(globals.linkAPI, "$dir"),
     headers: headers,
     body: jsonEncode(body),
   );
@@ -23,7 +23,7 @@ apiPUT(body, dir) async{
 
 apiGET(context,dir) async{
   try {//---------------------------------------------------------------------|GET VISITAS PLAN
-    var res = await http.get(Uri.http("10.0.2.2:9000", "$dir"));
+    var res = await http.get(Uri.http(globals.linkAPI, "$dir"));
     List<dynamic> VisitasReales = [];
     if (res.statusCode == 200) {
       var jsonData1 = jsonDecode(res.body);
@@ -36,7 +36,7 @@ apiGET(context,dir) async{
 
 apiGETone(context,dir,String date) async{
   try {//---------------------------------------------------------------------|GET VISITAS PLAN
-    var res = await http.get(Uri.http("10.0.2.2:9000", "$dir"));
+    var res = await http.get(Uri.http(globals.linkAPI, "$dir"));
     if (res.statusCode == 200) {
       var jsonData1 = jsonDecode(res.body);
       return jsonData1[0][date];

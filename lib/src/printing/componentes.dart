@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../identidad/marca.dart';
 import 'componentesListViews.dart';
 
@@ -241,10 +242,10 @@ class _ContPreviewVisitasProgramadasState
                                   ],
                                 )
                               : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
-                                        'No hay datos para mostrar INSERTE VAL IMG')
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset('Asets/animations/agendar.json', height: identidadMedidas(context, 'Width')*0.55),
                                   ],
                                 ),
                   ButtonCustom2(
