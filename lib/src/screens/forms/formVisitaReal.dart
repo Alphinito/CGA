@@ -1,7 +1,7 @@
 import 'package:cga/src/identidad/marca.dart';
 import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
-import '../../logic/formProgramarVisita.dart';
+import '../../logic/formularios.dart';
 import '../../printing/componentesFormularios.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

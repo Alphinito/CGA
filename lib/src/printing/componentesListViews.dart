@@ -2,7 +2,9 @@ import 'package:cga/src/printing/componentes.dart';
 import 'package:flutter/material.dart';
 import '../api/apiMethods.dart';
 import '../identidad/marca.dart';
+import '../logic/formularios.dart';
 import '../responses/status.dart';
+import '../data/globals.dart' as globals;
 
 class CustomSizedBox1 extends StatelessWidget {
   final String title;
@@ -71,10 +73,34 @@ planToReal(context, id) async {
   try {
     //----------------------------------------------------------|SERVER REQUEST|
     apiPUT(body, 'form-visitas/updateMAIN/$id');
-    apiPOST(body2,"visitas-real");
+    apiPOST(body2, "visitas-real");
     //---------------------------------------------------------------|RESULTADO|
     Navigator.of(context).pop();
-    respuesta(context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
+    respuesta(
+        context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
+  } catch (err) {
+    respuesta(context, 'error', 'Error!', '$err');
+  }
+}
+
+realToSeguimiento(context, id) async {
+  //--------------------------------------------------------------|DATA TO SEND|
+  final body = {"VIS_REAL": 1};
+  final body2 = {
+    "REA_VIS": id,
+    "REA_DIRECTA": 0,
+    "REA_FECHA": "${DateTime.now()}",
+    "REA_HORA": "${TimeOfDay.now().format(context)}",
+  };
+
+  try {
+    //----------------------------------------------------------|SERVER REQUEST|
+    apiPUT(body, 'form-visitas/updateMAIN/$id');
+    apiPOST(body2, "visitas-real");
+    //---------------------------------------------------------------|RESULTADO|
+    Navigator.of(context).pop();
+    respuesta(
+        context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
   } catch (err) {
     respuesta(context, 'error', 'Error!', '$err');
   }
@@ -114,13 +140,26 @@ DetalleVisitasPlan(context, index, data) {
                 children: [
                   Column(
                     children: [
-                      ButtonCustom2(radius: 50, height: 40, width: 40,iconn: const Icon(Icons.import_export), onTap: (){planToReal(context, data[index]['VIS_ID']);}),
+                      ButtonCustom2(
+                          radius: 50,
+                          height: 40,
+                          width: 40,
+                          iconn: const Icon(Icons.import_export),
+                          onTap: () {
+                            planToReal(context, data[index]['VIS_ID']);
+                          }),
                       const Text('Convertir a real')
                     ],
                   ),
                   Column(
                     children: [
-                      ButtonCustom2(buttonColor: identidadColor('Rojo'),radius: 50, height: 40, width: 40,iconn: const Icon(Icons.cancel_outlined), onTap: (){}),
+                      ButtonCustom2(
+                          buttonColor: identidadColor('Rojo'),
+                          radius: 50,
+                          height: 40,
+                          width: 40,
+                          iconn: const Icon(Icons.cancel_outlined),
+                          onTap: () {}),
                       const Text('Se canceló')
                     ],
                   )
@@ -141,55 +180,128 @@ DetalleVisitasReal(context, index, data) {
   return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: const Text('Detalle de visita Real'),
-        contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
-        children: [
-          CustomSizedBox1(
-              title: 'ID:', value: data[index]['VIS_ID'].toString()),
-          CustomSizedBox1(
-              title: 'Especialista:',
-              value: data[index]['VIS_ESPECIALISTA'].toString()),
-          CustomSizedBox2(
-              title: 'Cliente:',
-              value: data[index]['CLI_NOMBRE'] +
-                  ' (SAP:' +
-                  data[index]['CLI_SAP'].toString() +
-                  ')'),
-          CustomSizedBox1(
-              title: 'Motivo de contacto:',
-              value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
-          CustomSizedBox1(title: 'Fecha:', value: data[index]['REA_FECHA']),
-          CustomSizedBox1(
-              title: 'Hora:', value: data[index]['REA_HORA']),
-          CustomSizedBox2(
-              title: 'Observación:', value: data[index]['VIS_OBSERVACION']),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            title: const Text('Detalle de visita Real'),
+            contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
+            children: [
+              CustomSizedBox1(
+                  title: 'ID:', value: data[index]['VIS_ID'].toString()),
+              CustomSizedBox1(
+                  title: 'Especialista:',
+                  value: data[index]['VIS_ESPECIALISTA'].toString()),
+              CustomSizedBox2(
+                  title: 'Cliente:',
+                  value: data[index]['CLI_NOMBRE'] +
+                      ' (SAP:' +
+                      data[index]['CLI_SAP'].toString() +
+                      ')'),
+              CustomSizedBox1(
+                  title: 'Motivo de contacto:',
+                  value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+              CustomSizedBox1(title: 'Fecha:', value: data[index]['REA_FECHA']),
+              CustomSizedBox1(title: 'Hora:', value: data[index]['REA_HORA']),
+              CustomSizedBox2(
+                  title: 'Observación:', value: data[index]['VIS_OBSERVACION']),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      ButtonCustom2(
+                          radius: 50,
+                          height: 40,
+                          width: 40,
+                          iconn: const Icon(Icons.fact_check_outlined),
+                          onTap: () {
+                            irFormularioSeguimiento(
+                                context, data[index]['VIS_ID']);
+                          }),
+                      const Text('Seguimiento')
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      ButtonCustom2(
+                          buttonColor: identidadColor('Rojo'),
+                          radius: 50,
+                          height: 40,
+                          width: 40,
+                          iconn: const Icon(Icons.cancel_outlined),
+                          onTap: () {}),
+                      const Text('Se canceló')
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 8),
+              ButtonCustom1(
+                  text: 'Cerrar',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  width: 100)
+            ],
+          ));
+}
+
+DetalleVisitasCompleta(context, index, data, id) async{
+  List data2 = await apiGET(context,'seguimiento/$id');
+  return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+            title: const Text('Detalle de visita completa'),
+            contentPadding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
             children: [
               Column(
                 children: [
-                  ButtonCustom2(radius: 50, height: 40, width: 40,iconn: const Icon(Icons.fact_check_outlined), onTap: (){}),
-                  const Text('Seguimiento')
+                  CustomSizedBox1(
+                      title: 'ID:', value: data[index]['VIS_ID'].toString()),
+                  CustomSizedBox1(
+                      title: 'Especialista:',
+                      value: data[index]['VIS_ESPECIALISTA'].toString()),
+                  CustomSizedBox2(
+                      title: 'Cliente:',
+                      value: data[index]['CLI_NOMBRE'] +
+                          ' (SAP:' +
+                          data[index]['CLI_SAP'].toString() +
+                          ')'),
+                  CustomSizedBox1(
+                      title: 'Motivo de contacto:',
+                      value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+                  CustomSizedBox1(
+                      title: 'Fecha:', value: data[index]['REA_FECHA']),
+                  CustomSizedBox1(
+                      title: 'Hora:', value: data[index]['REA_HORA']),
+                  CustomSizedBox2(
+                      title: 'Observación:',
+                      value: data[index]['VIS_OBSERVACION']),
+
+                  //------------------------------------------------------------------------------------//
+
+                  CustomSizedBox1(
+                      title: 'Id de seguimiento:',
+                      value: data2[0]['SEG_ID'].toString()),
+                  CustomSizedBox2(
+                      title: 'Resultado de seguimiento:',
+                      value: '${data2[0]['SEG_RESULTADO'].toString()}\n ${data2[0]['SEG_RESULTADO_OTRO']}'
+                          ),
+                  CustomSizedBox2(
+                      title: 'Razón del resultado:',
+                      value: '${data2[0]['SEG_RAZON'].toString()}\n ${data2[0]['SEG_RAZON_OTRO']}'),
+                  CustomSizedBox2(
+                      title: 'Observación de seguimiento:',
+                      value: data2[0]['SEG_OBSERVACION'].toString()),
+                  const SizedBox(height: 16),
+                  ButtonCustom1(
+                      text: 'Cerrar',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      width: 300),
                 ],
               ),
-              Column(
-                children: [
-                  ButtonCustom2(buttonColor: identidadColor('Rojo'),radius: 50, height: 40, width: 40,iconn: const Icon(Icons.cancel_outlined), onTap: (){}),
-                  const Text('Se canceló')
-                ],
-              )
             ],
-          ),
-          const SizedBox(height: 8),
-          ButtonCustom1(
-              text: 'Cerrar',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              width: 100)
-        ],
-      ));
+          ));
 }
 
 class ContenedorListView extends StatefulWidget {
@@ -223,14 +335,18 @@ class _ContenedorListViewState extends State<ContenedorListView> {
                   return ListTile(
                     title:
                         Text(widget.visitasReales[indexF1][widget.params[0]]),
-                    subtitle:
-                        Text(widget.visitasReales[indexF1][widget.params[1]]),
+                    subtitle: Text(widget.visitasReales[indexF1]
+                            [widget.params[1]]
+                        .toString()),
                     trailing: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.visitasReales[indexF1][widget.params[2]],
+                          DateTime.parse(widget.visitasReales[indexF1]
+                                  [widget.params[2]])
+                              .toString()
+                              .substring(0, 10),
                           style: const TextStyle(
                               fontWeight: FontWeight.w100,
                               fontStyle: FontStyle.italic),
@@ -244,8 +360,15 @@ class _ContenedorListViewState extends State<ContenedorListView> {
                     selectedTileColor: Color(identidadColor('Gris')),
                     onTap: () {
                       widget.title == 'Visitas programadas'
-                          ? DetalleVisitasPlan(context, indexF1, widget.visitasReales)
-                          : DetalleVisitasReal(context, indexF1, widget.visitasReales);
+                          ? DetalleVisitasPlan(
+                              context, indexF1, widget.visitasReales)
+                          : widget.title == 'Visitas reales'
+                              ? DetalleVisitasReal(
+                                  context, indexF1, widget.visitasReales)
+                              : widget.title == 'Visitas Completadas'
+                                  ? DetalleVisitasCompleta(
+                                      context, indexF1, widget.visitasReales, widget.visitasReales[indexF1]['VIS_ID'])
+                                  : '';
                     },
                   );
                 }),

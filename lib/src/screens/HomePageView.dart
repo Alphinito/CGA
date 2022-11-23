@@ -17,7 +17,7 @@ class _HomePageViewState extends State<HomePageView> {
   String visitasProgramadas = '';
 
   setIndicators() async{
-    List dataListSeguimientos = await apiGET(context, 'visitas-real/list/${globals.empId}');
+    List dataListSeguimientos = await apiGET(context, 'visitas-real/list-sinSeg/${globals.empId}');
     List dataListProgramadas = await apiGET(context, 'form-visitas/list/${globals.empId}');
     setState(() {
       seguimientosFaltantes = dataListSeguimientos.length.toString();

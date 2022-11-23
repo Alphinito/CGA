@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'dart:convert';
 import '../data/globals.dart' as globals;
 import 'package:http/http.dart' as http;
-import '../logic/formProgramarVisita.dart';
+import '../logic/formularios.dart';
 import '../printing/componentes.dart';
 import '../responses/status.dart';
 
@@ -16,8 +16,10 @@ class HomeFormsView extends StatefulWidget {
 class _HomeFormsViewState extends State<HomeFormsView> {
   List<dynamic> Visitas = [];
   List<dynamic> VisitasReales = [];
+  List<dynamic> VisitasRealesConSeguimiento = [];
   bool _loading = true;
   bool _loading2 = true;
+  bool _loading3 = true;
 
   GetVisitas3() async {
     try {//---------------------------------------------------------------------|GET VISITAS PLAN
@@ -33,12 +35,24 @@ class _HomeFormsViewState extends State<HomeFormsView> {
       respuesta(context, 'error', 'Error!', '$err');
     }
     try {//---------------------------------------------------------------------|GET VISITAS REALES
-      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list-sinSeg/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData2 = jsonDecode(res.body);
         setState(() {
           VisitasReales = jsonData2;
           _loading2 = false;
+        });
+      }
+    } catch (err) {
+      respuesta(context, 'error', 'Error!', '$err');
+    }
+    try {//---------------------------------------------------------------------|GET VISITAS REALES CON SEGUIMIENTO
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
+      if (res.statusCode == 200) {
+        var jsonData3 = jsonDecode(res.body);
+        setState(() {
+          VisitasRealesConSeguimiento = jsonData3;
+          _loading3 = false;
         });
       }
     } catch (err) {
@@ -59,7 +73,7 @@ class _HomeFormsViewState extends State<HomeFormsView> {
         _loading
             ? Lottie.asset('Asets/animations/loadingLine.json',
                 height: 350)
-            : ContPreviewVisitasProgramadas(
+            : ContPreview(
           tipoFormulario: 'Visita Plan',
                 title: 'Visitas programadas',
                 params: const ['CLI_NOMBRE','MOT_MOTIVO','VIS_FECHA','VIS_HORA_INICIO'],
@@ -74,9 +88,9 @@ class _HomeFormsViewState extends State<HomeFormsView> {
         _loading2
             ? Lottie.asset('Asets/animations/loadingLine.json',
             height: 350)
-            : ContPreviewVisitasProgramadas(
+            : ContPreview(
             tipoFormulario: 'Visita Real',
-            title: 'Visitas reales',
+            title: 'Visitas realizadas',
             params: const ['CLI_NOMBRE','MOT_MOTIVO','REA_FECHA','REA_HORA'],
             onTapAdd: () {
               irFormularioVisitaReal(context);
@@ -85,6 +99,21 @@ class _HomeFormsViewState extends State<HomeFormsView> {
               irViewVisitaReal(context);
             },
             getDataList: VisitasReales
+        ),
+        _loading3
+            ? Lottie.asset('Asets/animations/loadingLine.json',
+            height: 350)
+            : ContPreview(
+            tipoFormulario: 'Visita Con Seguimiento',
+            title: 'Visitas completadas',
+            params: const ['CLI_NOMBRE','VIS_ID','REA_FECHA','REA_HORA'],
+            onTapAdd: () {
+              irViewVisitaCompleta(context);
+            },
+            onTapList: () {
+
+            },
+            getDataList: VisitasRealesConSeguimiento
         )
       ],
     );

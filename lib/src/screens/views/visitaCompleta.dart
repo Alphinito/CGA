@@ -5,25 +5,25 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../responses/status.dart';
 
-class VisitaRealListView extends StatefulWidget {
-  const VisitaRealListView({Key? key}) : super(key: key);
+class VisitaCompletaListView extends StatefulWidget {
+  const VisitaCompletaListView({Key? key}) : super(key: key);
 
   @override
-  State<VisitaRealListView> createState() => _VisitaRealListViewState();
+  State<VisitaCompletaListView> createState() => _VisitaCompletaListViewState();
 }
 
-class _VisitaRealListViewState extends State<VisitaRealListView> {
+class _VisitaCompletaListViewState extends State<VisitaCompletaListView> {
 
   bool _loading = true;
-  List<dynamic> visitasReales = [];
+  List<dynamic> visitasCompletadas = [];
 
   Get() async {
     try{
-      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list-sinSeg/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         setState(() {
-          visitasReales = jsonData;
+          visitasCompletadas = jsonData;
           _loading = false;
         });
       }
@@ -38,6 +38,6 @@ class _VisitaRealListViewState extends State<VisitaRealListView> {
   }
   @override
   Widget build(BuildContext context) {
-    return ContenedorListView(title: 'Visitas reales', visitasReales: visitasReales, params: const ['CLI_NOMBRE','MOT_MOTIVO','REA_FECHA','REA_HORA']);
+    return ContenedorListView(title: 'Visitas Completadas', visitasReales: visitasCompletadas, params: const ['CLI_NOMBRE','VIS_ID','REA_FECHA','REA_HORA']);
   }
 }

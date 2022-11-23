@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../identidad/marca.dart';
 import 'componentesListViews.dart';
+import '../data/globals.dart' as globals;
 
 //-----------------------------------------------------------------------------|BUTTON CUSTOM 1 (TEXT)
 class ButtonCustom1 extends StatelessWidget {
@@ -75,13 +76,13 @@ class ButtonCustom2 extends StatelessWidget {
 }
 
 //-----------------------------------------------------------------------------|VISTAS PREVIAS VISITAS
-class IndPreviewVisitas extends StatelessWidget {
+class IndPreview extends StatelessWidget {
   final List dataList;
   final List params;
   final int index;
   final String tipoDeFormulario;
 
-  IndPreviewVisitas({
+  IndPreview({
     super.key,
     required this.dataList,
     required this.params,
@@ -112,9 +113,9 @@ class IndPreviewVisitas extends StatelessWidget {
               ? DetalleVisitasPlan(context, index,dataList)
               : tipoDeFormulario == 'Visita Real'
                   ? DetalleVisitasReal(context, index,dataList)
-                  : tipoDeFormulario == ''
-                      ? DetalleVisitasPlan(
-                          context, index,dataList)
+                  : tipoDeFormulario == 'Visita Con Seguimiento'
+                      ? DetalleVisitasCompleta(
+                          context, index,dataList, dataList[index]['VIS_ID'])
                       : '';
         },
         trailing: Column(
@@ -137,7 +138,7 @@ class IndPreviewVisitas extends StatelessWidget {
 }
 
 //-----------------------------------------------------------------------------|PREVIEW VISITAS PROGRAMADAS
-class ContPreviewVisitasProgramadas extends StatefulWidget {
+class ContPreview extends StatefulWidget {
   final String title;
   VoidCallback onTapAdd;
   VoidCallback onTapList;
@@ -145,7 +146,7 @@ class ContPreviewVisitasProgramadas extends StatefulWidget {
   List params;
   String tipoFormulario;
 
-  ContPreviewVisitasProgramadas({
+  ContPreview({
     super.key,
     required this.title,
     required this.onTapAdd,
@@ -156,12 +157,11 @@ class ContPreviewVisitasProgramadas extends StatefulWidget {
   });
 
   @override
-  State<ContPreviewVisitasProgramadas> createState() =>
-      _ContPreviewVisitasProgramadasState();
+  State<ContPreview> createState() =>
+      _ContPreviewState();
 }
 
-class _ContPreviewVisitasProgramadasState
-    extends State<ContPreviewVisitasProgramadas> {
+class _ContPreviewState extends State<ContPreview> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -191,19 +191,19 @@ class _ContPreviewVisitasProgramadasState
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IndPreviewVisitas(
+                            IndPreview(
                               index: 0,
                               dataList: widget.getDataList,
                               params: widget.params,
                               tipoDeFormulario: widget.tipoFormulario,
                             ),
-                            IndPreviewVisitas(
+                            IndPreview(
                               index: 1,
                               dataList: widget.getDataList,
                               params: widget.params,
                               tipoDeFormulario: widget.tipoFormulario,
                             ),
-                            IndPreviewVisitas(
+                            IndPreview(
                               index: 2,
                               dataList: widget.getDataList,
                               params: widget.params,
@@ -215,13 +215,13 @@ class _ContPreviewVisitasProgramadasState
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                IndPreviewVisitas(
+                                IndPreview(
                                   index: 0,
                                   dataList: widget.getDataList,
                                   params: widget.params,
                                   tipoDeFormulario: widget.tipoFormulario,
                                 ),
-                                IndPreviewVisitas(
+                                IndPreview(
                                   index: 1,
                                   dataList: widget.getDataList,
                                   params: widget.params,
@@ -233,7 +233,7 @@ class _ContPreviewVisitasProgramadasState
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    IndPreviewVisitas(
+                                    IndPreview(
                                       index: 0,
                                       dataList: widget.getDataList,
                                       params: widget.params,

@@ -4,7 +4,10 @@ import 'package:http/http.dart' as http;
 import '../api/apiMethods.dart';
 import '../data/globals.dart' as globals;
 import '../responses/status.dart';
+import '../screens/HomeFormsView.dart';
+import '../screens/forms/seguimiento.dart';
 
+//-----------------------------------------------------------------------|GO TO|
 irFormularioProgramarVisita(context) {
   Navigator.of(context).pushNamed('/formProgramarVisita');
 }
@@ -14,10 +17,18 @@ irFormularioVisitaReal(context) {
 irViewVisitaReal(context) {
   Navigator.of(context).pushNamed('/ViewListVisitaReal');
 }
-
 irViewVisitaPlan(context) {
   Navigator.of(context).pushNamed('/ViewListVisitaPlan');
 }
+irViewVisitaCompleta(context) {
+  Navigator.of(context).pushNamed('/ViewListVisitaCompletada');
+}
+irFormularioSeguimiento(context, visId) {
+  Navigator.of(context).pushNamed('/formSeguimiento',arguments: visId);
+}
+
+
+//-------------------------------------------------------------------|SEND DATA|
 final headers = {"Content-Type": "application/json;charset=UTF-8"};
 enviarDatosDeFormulario(context,cliente, motivo, fecha, horaInicio, horaFin, observacion) async {
   final body = {
@@ -30,11 +41,7 @@ enviarDatosDeFormulario(context,cliente, motivo, fecha, horaInicio, horaFin, obs
     "VIS_OBSERVACION": "$observacion"
   };
   try{
-    await http.post(
-      Uri.http(globals.linkAPI, "form-visitas"),
-      headers: headers,
-      body: jsonEncode(body),
-    );
+    apiPOST(body, "form-visitas");
     Navigator.pop(context);
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
   }catch(err){
@@ -82,6 +89,29 @@ enviarDatosDeFormularioReal(context,cliente, motivo, fecha, hora, observacion) a
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
   }catch(err){//----------------------------------------------------------------|Captura de error
     print(err);
+    return respuesta(context, 'error','Error', '$err');
+  }
+
+}
+
+enviarDatosDeSeguimiento(context,SEG_VISITA, SEG_RESULTADO, SEG_RESULTADO_OTRO, SEG_RAZON, SEG_RAZON_OTRO, SEG_OBSERVACION) async {
+  final bodyPOST = {
+    "SEG_VISITA": SEG_VISITA,
+    "SEG_RESULTADO": SEG_RESULTADO,
+    "SEG_RESULTADO_OTRO": "$SEG_RESULTADO_OTRO",
+    "SEG_RAZON": SEG_RAZON,
+    "SEG_RAZON_OTRO": "$SEG_RAZON_OTRO",
+    "SEG_OBSERVACION": "$SEG_OBSERVACION",
+  };
+  final bodyPUT = {
+    "REA_RESULTADO": 1
+  };
+  try{
+    apiPUT(bodyPUT, 'visitas-real/updateFOCUS/$SEG_VISITA');
+    apiPOST(bodyPOST, 'seguimiento');
+    Navigator.pop(context);
+    return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
+  }catch(err){
     return respuesta(context, 'error','Error', '$err');
   }
 
