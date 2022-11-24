@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../identidad/marca.dart';
 import 'componentesListViews.dart';
-import '../data/globals.dart' as globals;
 
 //-----------------------------------------------------------------------------|BUTTON CUSTOM 1 (TEXT)
 class ButtonCustom1 extends StatelessWidget {
@@ -123,7 +122,7 @@ class IndPreview extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              dataList[index][params[2]],
+              DateTime.parse(dataList[index][params[2]]).toString().substring(0, 10),
               style: const TextStyle(
                   fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),
             ),
@@ -145,6 +144,8 @@ class ContPreview extends StatefulWidget {
   List getDataList;
   List params;
   String tipoFormulario;
+  Widget iconBlueButton;
+  bool listButton;
 
   ContPreview({
     super.key,
@@ -154,6 +155,8 @@ class ContPreview extends StatefulWidget {
     required this.getDataList,
     required this.params,
     required this.tipoFormulario,
+    this.iconBlueButton = const Icon(Icons.add),
+    this.listButton = true,
   });
 
   @override
@@ -250,14 +253,15 @@ class _ContPreviewState extends State<ContPreview> {
                                 ),
                   ButtonCustom2(
                     onTap: widget.onTapAdd,
-                    iconn: const Icon(Icons.add),
+                    iconn: widget.iconBlueButton,
                     buttonColor: identidadColor('Primario Azul'),
                     width: identidadMedidas(context, 'Width') * 0.1,
                     height: 218,
                   )
                 ],
               ),
-              Padding(
+              widget.listButton
+              ? Padding(
                 padding:
                     EdgeInsets.all(identidadMedidas(context, 'Pading') * 0.5),
                 child: ButtonCustom2(
@@ -265,7 +269,7 @@ class _ContPreviewState extends State<ContPreview> {
                   onTap: widget.onTapList,
                   radius: 50,
                 ),
-              )
+              ) : const SizedBox(height: 50)
             ],
           ),
         ),

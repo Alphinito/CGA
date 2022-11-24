@@ -18,6 +18,7 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
   List<dynamic> _resultados = [];
   List<dynamic> _razones = [];
   bool _loading = true;
+  bool _isButtonDisabled = true;
 
   Get() async {
     try {
@@ -75,6 +76,23 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
     }
   }
 
+  habilitarButton(){
+    if(_statusP1 == 'Activo' && _statusP3 == 'Activo'){
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    }
+
+  }
+  _counterButtonPress(argumentID) {
+    if (_isButtonDisabled) {
+      return null;
+    } else {
+      return enviarDatosDeSeguimiento(context, argumentID, setResultado, setResultadoOTRO.text, setRazon, setRazonOTRO.text, _detalle.text);
+    }
+  }
+
+
   //----------------------------------------------------------------------------| Variables de Almacenamineto de datos
   int setResultado = 8;
   final setResultadoOTRO = TextEditingController();
@@ -119,9 +137,9 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
                                   setState(() {
                                     _selectedIndexF1 = indexF1;
                                     _statusP1 = 'Activo';
-                                    setResultado =
-                                        _resultados[indexF1]['RES_ID'];
+                                    setResultado = _resultados[indexF1]['RES_ID'];
                                     ToPage(1);
+                                    habilitarButton();
                                   });
                                 },
                               );
@@ -139,6 +157,7 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
                                 onTap: () {
                                   setState(() {
                                     _statusP1 = 'Activo';
+                                    habilitarButton();
                                   });
                                 },
                                 decoration: const InputDecoration(
@@ -184,6 +203,7 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
                                     _statusP3 = 'Activo';
                                     setRazon = _razones[indexF3]['RES_RAZ_ID'];
                                     ToPage(2);
+                                    habilitarButton();
                                   });
                                 },
                               );
@@ -205,6 +225,7 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
                                 onTap: () {
                                   setState(() {
                                     _statusP3 = 'Activo';
+                                    habilitarButton();
                                   });
                                 },
                                 decoration: const InputDecoration(
@@ -265,7 +286,7 @@ class _FormSeguimientoState extends State<FormSeguimiento> {
                             child: ButtonCustom1(
                                 text: 'SAVE',
                                 onTap: () {
-                                  enviarDatosDeSeguimiento(context, argumentID, setResultado, setResultadoOTRO.text, setRazon, setRazonOTRO.text, _detalle.text);
+                                  _counterButtonPress(argumentID);
                                 },
                                 width: 100),
                           ),

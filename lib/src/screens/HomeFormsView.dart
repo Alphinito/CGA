@@ -104,6 +104,8 @@ class _HomeFormsViewState extends State<HomeFormsView> {
             ? Lottie.asset('Asets/animations/loadingLine.json',
             height: 350)
             : ContPreview(
+            iconBlueButton: const Icon(Icons.dehaze),
+            listButton: false,
             tipoFormulario: 'Visita Con Seguimiento',
             title: 'Visitas completadas',
             params: const ['CLI_NOMBRE','VIS_ID','REA_FECHA','REA_HORA'],

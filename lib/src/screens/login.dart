@@ -23,77 +23,80 @@ class _LoginState extends State<Login> {
             height: 560,
             color: Color(identidadColor('Primario Azul')),
           ),
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.transparent,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Image.asset(
-                        'Asets/img/logo.png',
-                        width: 90,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 60),
-                      color: Color(identidadColor('Veige')),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(25),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Bienvenido",
-                              style: TextStyle(
-                                color: Colors.grey[500],
-                                fontSize: 30,
-                                fontFamily: 'Kabel',
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 40, bottom: 80),
-                              child: Column(
-                                children: [
-                                  TextFormField(
-                                    controller: _user,
-                                    decoration: const InputDecoration(
-                                      labelText: "Usuario",
-                                    ),
-                                  ),
-                                  TextFormField(
-                                    controller: _clave,
-                                    validator: (value){
-                                      if(value != null){
-                                        return "Ingrese su clave";
-                                      }
-                                    },
-                                    decoration: const InputDecoration(
-                                      labelText: "Clave",
-                                    ),
-                                    obscureText: true,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ButtonCustom1(
-                              text: "GO",
-                              onTap: () {
-                                validacionLogin(context, _user.text, _clave.text);
-                              },
-                            ),
-                          ],
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.transparent,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Image.asset(
+                          'Asets/img/logo.png',
+                          width: 90,
+                          color: Colors.white,
                         ),
                       ),
-                    )
-                  ],
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 60),
+                        color: Color(identidadColor('Veige')),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(25),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Bienvenido",
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                  fontSize: 30,
+                                  fontFamily: 'Kabel',
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 40, bottom: 80),
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _user,
+                                      decoration: const InputDecoration(
+                                        labelText: "Usuario",
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller: _clave,
+                                      validator: (value){
+                                        if(value != null){
+                                          return "Ingrese su clave";
+                                        }
+                                      },
+                                      decoration: const InputDecoration(
+                                        labelText: "Clave",
+                                      ),
+                                      obscureText: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ButtonCustom1(
+                                text: "GO",
+                                onTap: () {
+                                  validacionLogin(context, _user.text, _clave.text);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

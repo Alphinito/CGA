@@ -21,6 +21,8 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
   List<dynamic> _clientes = [];
   List<dynamic> _motivos = [];
   bool _loading = true;
+  bool _isButtonDisabled = true;
+
 
   Get() async {
     try{
@@ -58,6 +60,42 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
   String _statusP1 = '';
   String _statusP3 = '';
   String _statusP4 = '';
+
+  final PageController _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  ToPage(page) {
+    if (_pageController.hasClients) {
+      _pageController.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  habilitarButton(){
+    if(_statusP1 == 'Activo' && _statusP3 == 'Activo'){
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    }
+
+  }
+  _counterButtonPress() {
+    if (_isButtonDisabled) {
+      return null;
+    } else {
+      return enviarDatosDeFormularioReal(context,setCliente, setMotivo, setFecha, setHora.format(context), _detalle.text);
+
+    }
+  }
+
   //----------------------------------------------------------------------------| Variables de Almacenamineto de datos
   int setCliente = 0;
   int setMotivo = 0;
@@ -82,6 +120,7 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
             padding:
             EdgeInsets.only(top: identidadMedidas(context, 'Pading') * 4),
             child: PageView(
+              controller: _pageController,
               children: [
                 Stack(
                   children: [
@@ -100,6 +139,8 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
                                 _selectedIndexF1 = indexF1;
                                 _statusP1 = 'Activo';
                                 setCliente = _clientes[indexF1]['CLI_ID'];
+                                ToPage(1);
+                                habilitarButton();
                               });
                             },
                           );
@@ -141,6 +182,8 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
                                 _selectedIndexF3 = indexF3;
                                 _statusP3 = 'Activo';
                                 setMotivo = _motivos[indexF3]['MOT_ID'];
+                                ToPage(2);
+                                habilitarButton();
                               });
                             },
                           );
@@ -210,7 +253,7 @@ class _FormVisitaRealState extends State<FormVisitaReal> {
             padding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: ButtonCustom1(text: 'SAVE', onTap: (){enviarDatosDeFormularioReal(context,setCliente, setMotivo, setFecha, setHora.format(context), _detalle.text);}, width: 100),
+              child: ButtonCustom1(text: 'SAVE', onTap: (){_counterButtonPress();}, width: 100),
             ),
           )
         ],

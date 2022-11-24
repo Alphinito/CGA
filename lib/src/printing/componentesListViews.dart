@@ -19,15 +19,27 @@ class CustomSizedBox1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 30,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontStyle: FontStyle.italic),
-          ),
-          Text(value)
-        ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(identidadColor('blanco')),
+            boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 0.2,
+            blurRadius: 0.2,
+            offset: const Offset(0, 0),
+          )
+        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontStyle: FontStyle.italic, color: Color(identidadColor('Primario Azul'))),
+            ),
+            Text(value)
+          ],
+        ),
       ),
     );
   }
@@ -44,17 +56,20 @@ class CustomSizedBox2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontStyle: FontStyle.italic),
-          ),
-          const SizedBox(height: 5),
-          Text(value)
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: identidadMedidas(context, 'Pading')*0.4),
+      child: SizedBox(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontStyle: FontStyle.italic, color: Color(identidadColor('Primario Azul'))),
+            ),
+            const SizedBox(height: 5),
+            Text(value)
+          ],
+        ),
       ),
     );
   }
@@ -255,16 +270,14 @@ DetalleVisitasCompleta(context, index, data, id) async{
               Column(
                 children: [
                   CustomSizedBox1(
-                      title: 'ID:', value: data[index]['VIS_ID'].toString()),
+                      title: 'ID:',
+                      value: data[index]['VIS_ID'].toString()),
                   CustomSizedBox1(
                       title: 'Especialista:',
                       value: data[index]['VIS_ESPECIALISTA'].toString()),
                   CustomSizedBox2(
                       title: 'Cliente:',
-                      value: data[index]['CLI_NOMBRE'] +
-                          ' (SAP:' +
-                          data[index]['CLI_SAP'].toString() +
-                          ')'),
+                      value: data[index]['CLI_NOMBRE'] + ' (SAP:' + data[index]['CLI_SAP'].toString() + ')'),
                   CustomSizedBox1(
                       title: 'Motivo de contacto:',
                       value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
@@ -283,11 +296,10 @@ DetalleVisitasCompleta(context, index, data, id) async{
                       value: data2[0]['SEG_ID'].toString()),
                   CustomSizedBox2(
                       title: 'Resultado de seguimiento:',
-                      value: '${data2[0]['SEG_RESULTADO'].toString()}\n ${data2[0]['SEG_RESULTADO_OTRO']}'
-                          ),
+                      value: '${data2[0]['RES_RESULTADO']}(${data2[0]['SEG_RESULTADO'].toString()})\n ${data2[0]['SEG_RESULTADO_OTRO']}'),
                   CustomSizedBox2(
                       title: 'Razón del resultado:',
-                      value: '${data2[0]['SEG_RAZON'].toString()}\n ${data2[0]['SEG_RAZON_OTRO']}'),
+                      value: '${data2[0]['RES_RAZON']}(${data2[0]['SEG_RAZON'].toString()})\n ${data2[0]['SEG_RAZON_OTRO']}'),
                   CustomSizedBox2(
                       title: 'Observación de seguimiento:',
                       value: data2[0]['SEG_OBSERVACION'].toString()),
@@ -343,10 +355,7 @@ class _ContenedorListViewState extends State<ContenedorListView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          DateTime.parse(widget.visitasReales[indexF1]
-                                  [widget.params[2]])
-                              .toString()
-                              .substring(0, 10),
+                          DateTime.parse(widget.visitasReales[indexF1][widget.params[2]]).toString().substring(0, 10),
                           style: const TextStyle(
                               fontWeight: FontWeight.w100,
                               fontStyle: FontStyle.italic),

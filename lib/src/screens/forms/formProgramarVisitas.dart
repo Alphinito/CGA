@@ -21,6 +21,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
   List<dynamic> _clientes = [];
   List<dynamic> _motivos = [];
   bool _loading = true;
+  bool _isButtonDisabled = true;
 
   Get() async {
     try{
@@ -58,6 +59,41 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
   String _statusP1 = '';
   String _statusP3 = '';
   String _statusP4 = '';
+
+  final PageController _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  ToPage(page) {
+    if (_pageController.hasClients) {
+      _pageController.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  habilitarButton(){
+    if(_statusP1 == 'Activo' && _statusP3 == 'Activo'){
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    }
+
+  }
+  _counterButtonPress() {
+    if (_isButtonDisabled) {
+      return null;
+    } else {
+      return enviarDatosDeFormulario(context,setCliente,setMotivo,setFecha,setHoraInicio.format(context),setHoraFin.format(context),_detalle.text);
+
+    }
+  }
   //----------------------------------------------------------------------------|Date y Time configuration
   var _currentSelectedTimeInicio = TimeOfDay.now();
   var _currentSelectedTimeFin = TimeOfDay.now();
@@ -113,6 +149,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
             padding:
             EdgeInsets.only(top: identidadMedidas(context, 'Pading') * 4),
             child: PageView(
+              controller: _pageController,
               children: [
                 Stack(
                   children: [
@@ -131,6 +168,8 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                 _selectedIndexF1 = indexF1;
                                 _statusP1 = 'Activo';
                                 setCliente = _clientes[indexF1]['CLI_ID'];
+                                ToPage(1);
+                                habilitarButton();
                               });
                             },
                           );
@@ -172,6 +211,8 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                 _selectedIndexF3 = indexF3;
                                 _statusP3 = 'Activo';
                                 setMotivo = _motivos[indexF3]['MOT_ID'];
+                                ToPage(2);
+                                habilitarButton();
                               });
                             },
                           );
@@ -206,8 +247,9 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                       onDateChanged: (date) {
                         setState(() {
                           setFecha = date;
+                          _statusP4 = 'Activo';
+                          habilitarButton();
                         });
-                        print(setFecha);
                       },
                     ),
                     Row(//------------------------------------------------------|BOTONES DE HORA
@@ -223,9 +265,10 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                   onPressed: () {
                                     callTimePiker('inicio');
                                     setState(() {
+                                      _statusP4 = 'Activo';
                                       setHoraInicio = _currentSelectedTimeInicio;
+                                      habilitarButton();
                                     });
-                                    print(setHoraInicio);
                                   },
                                   child: Text(_currentSelectedTimeInicio.format(context))),
                             ],
@@ -242,9 +285,10 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                   onPressed: () {
                                     callTimePiker('fin');
                                     setState(() {
+                                      _statusP4 = 'Activo';
                                       setHoraFin = _currentSelectedTimeFin;
+                                      habilitarButton();
                                     });
-                                    print(setHoraFin);
                                   },
                                   child: Text(_currentSelectedTimeFin.format(context))),
                             ],
@@ -294,7 +338,7 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
             padding: EdgeInsets.all(identidadMedidas(context, 'Pading')),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: ButtonCustom1(text: 'SAVE', onTap: (){enviarDatosDeFormulario(context,setCliente,setMotivo,setFecha,setHoraInicio.format(context),setHoraFin.format(context),_detalle.text);}, width: 100),
+              child: ButtonCustom1(text: 'SAVE', onTap: (){_counterButtonPress();}, width: 100),
             ),
           )
         ],
