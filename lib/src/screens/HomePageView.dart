@@ -15,13 +15,19 @@ class _HomePageViewState extends State<HomePageView> {
 
   String seguimientosFaltantes = '';
   String visitasProgramadas = '';
+  String today = '';
+  String tomorrow = '';
 
   setIndicators() async{
     List dataListSeguimientos = await apiGET(context, 'visitas-real/list-sinSeg/${globals.empId}');
     List dataListProgramadas = await apiGET(context, 'form-visitas/list/${globals.empId}');
+    List cantidadTODAY = await apiGET(context, 'form-visitas/today/${globals.empId}');
+    List cantidadTOMORROW = await apiGET(context, 'form-visitas/tomorrow/${globals.empId}');
     setState(() {
       seguimientosFaltantes = dataListSeguimientos.length.toString();
       visitasProgramadas = dataListProgramadas.length.toString();
+      today = cantidadTODAY[0]['COUNT(VIS_ID)'].toString();
+      tomorrow = cantidadTOMORROW[0]['COUNT(VIS_ID)'].toString();
     });
   }
   @override
@@ -67,14 +73,14 @@ class _HomePageViewState extends State<HomePageView> {
               ),
               Container(
                 padding: const EdgeInsets.all(20),
-                height: 180,
+                height: 150,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.4),
                         spreadRadius: 0.5,
                         blurRadius: 0.5,
-                        offset: Offset(0, 0),
+                        offset: const Offset(0, 0),
                       )
                     ],
                     color: Color(identidadColor('Gris')),
@@ -88,14 +94,14 @@ class _HomePageViewState extends State<HomePageView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Visitas programadas'),
-                        const SizedBox(height: 19),
+                        const SizedBox(height: 16),
                         Text(
                           visitasProgramadas,
                           style: const TextStyle(
                             fontSize: 30,
                           ),
                         ),
-                        const SizedBox(height: 19)
+                        const SizedBox(height: 9)
                       ],
                     ),
                     Row(
@@ -104,18 +110,16 @@ class _HomePageViewState extends State<HomePageView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const[
-                            Text('Hoy:'),
-                            Text('Mañana:'),
-                            Text('Esta semana:'),
+                            Text('Para hoy:'),
+                            Text('Para mañana:'),
                           ],
                         ),
                         const SizedBox(width: 35),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          children: const[
-                            Text('3'),
-                            Text('2'),
-                            Text('6'),
+                          children: [
+                            Text(today),
+                            Text(tomorrow),
                           ],
                         )
                       ],

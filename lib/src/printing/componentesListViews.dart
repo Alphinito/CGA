@@ -296,7 +296,7 @@ DetalleVisitasCompleta(context, index, data, id) async{
                       value: data2[0]['SEG_ID'].toString()),
                   CustomSizedBox2(
                       title: 'Resultado de seguimiento:',
-                      value: '${data2[0]['RES_RESULTADO']}(${data2[0]['SEG_RESULTADO'].toString()})\n ${data2[0]['SEG_RESULTADO_OTRO']}'),
+                      value: '${data2[0]['RES_RESULTADO']} (${data2[0]['SEG_RESULTADO'].toString()})\n ${data2[0]['SEG_RESULTADO_OTRO']}'),
                   CustomSizedBox2(
                       title: 'Razón del resultado:',
                       value: '${data2[0]['RES_RAZON']}(${data2[0]['SEG_RAZON'].toString()})\n ${data2[0]['SEG_RAZON_OTRO']}'),
