@@ -40,6 +40,7 @@ dependencies:
   lottie: ^2.0.0
   flutter_localizations:    #Estas dos
     sdk: flutter           #Son una
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:

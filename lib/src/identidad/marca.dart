@@ -4,6 +4,8 @@ identidadColor(color){
   int identidadC;
   if(color == 'Primario Azul'){
     return identidadC = 0xFF0080C4;
+  }else if(color == 'Azul'){
+    return identidadC = 0x330080C4;
   }else if(color == 'Veige'){
     return identidadC = 0xFFF5F5F5;
   }else if(color == 'Rojo'){

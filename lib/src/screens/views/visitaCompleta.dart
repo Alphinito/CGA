@@ -19,7 +19,7 @@ class _VisitaCompletaListViewState extends State<VisitaCompletaListView> {
 
   Get() async {
     try{
-      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list-conSeg/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         setState(() {

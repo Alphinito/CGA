@@ -38,6 +38,6 @@ class _VisitaPlanListViewState extends State<VisitaPlanListView> {
   }
   @override
   Widget build(BuildContext context) {
-    return ContenedorListView(title: 'Visitas programadas', visitasReales: visitasPlan, params: const ['CLI_NOMBRE','MOT_MOTIVO','VIS_FECHA','VIS_HORA_INICIO']);
+    return ContenedorListView(colorIndicators: true,title: 'Visitas programadas', visitasReales: visitasPlan, params: const ['CLI_NOMBRE','MOT_MOTIVO','VIS_FECHA','VIS_HORA_INICIO']);
   }
 }

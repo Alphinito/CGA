@@ -47,7 +47,7 @@ class _HomeFormsViewState extends State<HomeFormsView> {
       respuesta(context, 'error', 'Error!', '$err');
     }
     try {//---------------------------------------------------------------------|GET VISITAS REALES CON SEGUIMIENTO
-      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list/${globals.empId}"));
+      var res = await http.get(Uri.http(globals.linkAPI, "visitas-real/list-conSeg/${globals.empId}"));
       if (res.statusCode == 200) {
         var jsonData3 = jsonDecode(res.body);
         setState(() {

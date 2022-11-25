@@ -20,9 +20,8 @@ class CustomSizedBox1 extends StatelessWidget {
     return SizedBox(
       height: 30,
       child: Container(
-        decoration: BoxDecoration(
-          color: Color(identidadColor('blanco')),
-            boxShadow: [
+        decoration:
+            BoxDecoration(color: Color(identidadColor('blanco')), boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 0.2,
@@ -35,7 +34,9 @@ class CustomSizedBox1 extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontStyle: FontStyle.italic, color: Color(identidadColor('Primario Azul'))),
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Color(identidadColor('Primario Azul'))),
             ),
             Text(value)
           ],
@@ -57,14 +58,17 @@ class CustomSizedBox2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: identidadMedidas(context, 'Pading')*0.4),
+      padding: EdgeInsets.symmetric(
+          vertical: identidadMedidas(context, 'Pading') * 0.4),
       child: SizedBox(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               title,
-              style: TextStyle(fontStyle: FontStyle.italic, color: Color(identidadColor('Primario Azul'))),
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Color(identidadColor('Primario Azul'))),
             ),
             const SizedBox(height: 5),
             Text(value)
@@ -141,7 +145,8 @@ DetalleVisitasPlan(context, index, data) {
                       ')'),
               CustomSizedBox1(
                   title: 'Motivo de contacto:',
-                  value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+                  value:
+                      '${data[index]['MOT_MOTIVO']} (${data[index]['VIS_MOTIVO_CONTACTO'].toString()})'),
               CustomSizedBox1(title: 'Fecha:', value: data[index]['VIS_FECHA']),
               CustomSizedBox1(
                   title: 'Hora inicio:', value: data[index]['VIS_HORA_INICIO']),
@@ -211,7 +216,8 @@ DetalleVisitasReal(context, index, data) {
                       ')'),
               CustomSizedBox1(
                   title: 'Motivo de contacto:',
-                  value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+                  value:
+                      '${data[index]['MOT_MOTIVO']} (${data[index]['VIS_MOTIVO_CONTACTO'].toString()})'),
               CustomSizedBox1(title: 'Fecha:', value: data[index]['REA_FECHA']),
               CustomSizedBox1(title: 'Hora:', value: data[index]['REA_HORA']),
               CustomSizedBox2(
@@ -259,8 +265,8 @@ DetalleVisitasReal(context, index, data) {
           ));
 }
 
-DetalleVisitasCompleta(context, index, data, id) async{
-  List data2 = await apiGET(context,'seguimiento/$id');
+DetalleVisitasCompleta(context, index, data, id) async {
+  List data2 = await apiGET(context, 'seguimiento/$id');
   return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
@@ -270,17 +276,20 @@ DetalleVisitasCompleta(context, index, data, id) async{
               Column(
                 children: [
                   CustomSizedBox1(
-                      title: 'ID:',
-                      value: data[index]['VIS_ID'].toString()),
+                      title: 'ID:', value: data[index]['VIS_ID'].toString()),
                   CustomSizedBox1(
                       title: 'Especialista:',
                       value: data[index]['VIS_ESPECIALISTA'].toString()),
                   CustomSizedBox2(
                       title: 'Cliente:',
-                      value: data[index]['CLI_NOMBRE'] + ' (SAP:' + data[index]['CLI_SAP'].toString() + ')'),
+                      value: data[index]['CLI_NOMBRE'] +
+                          ' (SAP:' +
+                          data[index]['CLI_SAP'].toString() +
+                          ')'),
                   CustomSizedBox1(
                       title: 'Motivo de contacto:',
-                      value: data[index]['VIS_MOTIVO_CONTACTO'].toString()),
+                      value:
+                          '${data[index]['MOT_MOTIVO']} (${data[index]['VIS_MOTIVO_CONTACTO'].toString()})'),
                   CustomSizedBox1(
                       title: 'Fecha:', value: data[index]['REA_FECHA']),
                   CustomSizedBox1(
@@ -296,10 +305,12 @@ DetalleVisitasCompleta(context, index, data, id) async{
                       value: data2[0]['SEG_ID'].toString()),
                   CustomSizedBox2(
                       title: 'Resultado de seguimiento:',
-                      value: '${data2[0]['RES_RESULTADO']} (${data2[0]['SEG_RESULTADO'].toString()})\n ${data2[0]['SEG_RESULTADO_OTRO']}'),
+                      value:
+                          '${data2[0]['RES_RESULTADO']} (${data2[0]['SEG_RESULTADO'].toString()})\n ${data2[0]['SEG_RESULTADO_OTRO']}'),
                   CustomSizedBox2(
                       title: 'Razón del resultado:',
-                      value: '${data2[0]['RES_RAZON']}(${data2[0]['SEG_RAZON'].toString()})\n ${data2[0]['SEG_RAZON_OTRO']}'),
+                      value:
+                          '${data2[0]['RES_RAZON']}(${data2[0]['SEG_RAZON'].toString()})\n ${data2[0]['SEG_RAZON_OTRO']}'),
                   CustomSizedBox2(
                       title: 'Observación de seguimiento:',
                       value: data2[0]['SEG_OBSERVACION'].toString()),
@@ -320,12 +331,14 @@ class ContenedorListView extends StatefulWidget {
   final String title;
   List visitasReales;
   List params;
+  bool colorIndicators;
 
   ContenedorListView({
     super.key,
     required this.title,
     required this.visitasReales,
     required this.params,
+    this.colorIndicators = false,
   });
 
   @override
@@ -344,7 +357,15 @@ class _ContenedorListViewState extends State<ContenedorListView> {
             child: ListView.builder(
                 itemCount: widget.visitasReales.length,
                 itemBuilder: (BuildContext context, int indexF1) {
+                  var date = DateTime.parse(widget.visitasReales[indexF1][widget.params[2]]).toUtc();
                   return ListTile(
+                    tileColor: widget.colorIndicators
+                        ? date.difference(DateTime.now()).inDays < 0
+                            ? Color(identidadColor('Rojo')) //Fechas Caducadas
+                            : date.difference(DateTime.now()).inDays == 0
+                                ? Color(identidadColor('Primario Azul')) //Hoy (Más precisamente un día de cercanía)
+                                : Color(identidadColor('Blanco')) //El resto
+                        : Color(identidadColor('blnco')),//Color predeterminado
                     title:
                         Text(widget.visitasReales[indexF1][widget.params[0]]),
                     subtitle: Text(widget.visitasReales[indexF1]
@@ -376,7 +397,10 @@ class _ContenedorListViewState extends State<ContenedorListView> {
                                   context, indexF1, widget.visitasReales)
                               : widget.title == 'Visitas Completadas'
                                   ? DetalleVisitasCompleta(
-                                      context, indexF1, widget.visitasReales, widget.visitasReales[indexF1]['VIS_ID'])
+                                      context,
+                                      indexF1,
+                                      widget.visitasReales,
+                                      widget.visitasReales[indexF1]['VIS_ID'])
                                   : '';
                     },
                   );
