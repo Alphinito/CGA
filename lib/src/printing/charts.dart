@@ -27,12 +27,12 @@ class Graphic1 extends StatelessWidget {
     return LineChart(LineChartData(
         minX: 1,
         maxX: 7,
-        minY: 1,
+        minY: 0,
         maxY: 10,
         titlesData: FlTitlesData(
             show: true,
-            topTitles: AxisTitles(drawBehindEverything: false),
-            rightTitles: AxisTitles(drawBehindEverything: false),
+            //topTitles: AxisTitles(drawBehindEverything: false),
+            //rightTitles: AxisTitles(drawBehindEverything: false),
             leftTitles: AxisTitles(drawBehindEverything: false),
             bottomTitles: AxisTitles(drawBehindEverything: false),
             ),
@@ -59,13 +59,13 @@ class Graphic1 extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
               spots: [
-                FlSpot(1, day1),
-                FlSpot(2, day2),
-                FlSpot(3, day3),
+                FlSpot(7, day1),
+                FlSpot(6, day2),
+                FlSpot(5, day3),
                 FlSpot(4, day4),
-                FlSpot(5, day5),
-                FlSpot(6, day6),
-                FlSpot(7, day7)
+                FlSpot(3, day5),
+                FlSpot(2, day6),
+                FlSpot(1, day7)
               ],
               isCurved: true,
               color: Color(identidadColor('Primario Azul')),

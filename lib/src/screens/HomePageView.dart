@@ -20,58 +20,40 @@ class _HomePageViewState extends State<HomePageView> {
   String today = '';
   String tomorrow = '';
   //Charts
-  double chartDay1 = 5;
-  double chartDay2 = 5;
-  double chartDay3 = 5;
-  double chartDay4 = 5;
-  double chartDay5 = 5;
-  double chartDay6 = 5;
-  double chartDay7 = 8;
+  double dChartDay1 = 5;
+  double dChartDay2 = 5;
+  double dChartDay3 = 5;
+  double dChartDay4 = 5;
+  double dChartDay5 = 5;
+  double dChartDay6 = 5;
+  double dChartDay7 = 8;
 
   setIndicators() async{
     //INSIGTS FRIST ROW
     List dataListSeguimientos = await apiGET(context, 'visitas-real/list-sinSeg/${globals.empId}');
-    print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| dataListSeguimientos DONE');
     List dataListProgramadas = await apiGET(context, 'form-visitas/list/${globals.empId}');
-    print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| dataListProgramadas DONE');
     List cantidadTODAY = await apiGET(context, 'form-visitas/today/${globals.empId}');
-    print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| cantidadTODAY DONE');
     List cantidadTOMORROW = await apiGET(context, 'form-visitas/tomorrow/${globals.empId}');
-    print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| cantidadTOMORROW DONE');
     //CHARTS Graphic1
     List chartDay1 = await apiGET(context, 'charts/graphic1/1/${globals.empId}');
-    print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 1 DONE');
-    // List chartDay2 = await apiGET(context, 'charts/graphic1/2/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 2 DONE');
-    // List chartDay3 = await apiGET(context, 'charts/graphic1/3/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 3 DONE');
-    // List chartDay4 = await apiGET(context, 'charts/graphic1/4/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 4 DONE');
-    // List chartDay5 = await apiGET(context, 'charts/graphic1/5/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 5 DONE');
-    // List chartDay6 = await apiGET(context, 'charts/graphic1/6/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 6 DONE');
-    // List chartDay7 = await apiGET(context, 'charts/graphic1/7/${globals.empId}');
-    // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 7 DONE');
+    List chartDay2 = await apiGET(context, 'charts/graphic1/2/${globals.empId}');
+    List chartDay3 = await apiGET(context, 'charts/graphic1/3/${globals.empId}');
+    List chartDay4 = await apiGET(context, 'charts/graphic1/4/${globals.empId}');
+    List chartDay5 = await apiGET(context, 'charts/graphic1/5/${globals.empId}');
+    List chartDay6 = await apiGET(context, 'charts/graphic1/6/${globals.empId}');
+    List chartDay7 = await apiGET(context, 'charts/graphic1/7/${globals.empId}');
     setState(() {
       seguimientosFaltantes = dataListSeguimientos.length.toString();
       visitasProgramadas = dataListProgramadas.length.toString();
       today = cantidadTODAY[0]['COUNT(VIS_ID)'].toString();
       tomorrow = cantidadTOMORROW[0]['COUNT(VIS_ID)'].toString();
-      chartDay1 = chartDay1[0]['COUNT(VIS_ID)'];
-      print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 1 SAVED');
-      // chartDay2 = chartDay2[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 2 SAVED');
-      // chartDay3 = chartDay3[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 3 SAVED');
-      // chartDay4 = chartDay4[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 4 SAVED');
-      // chartDay5 = chartDay5[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 5 SAVED');
-      // chartDay6 = chartDay6[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 6 SAVED');
-      // chartDay7 = chartDay7[0]['COUNT(VIS_ID)'];
-      // print('----|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| DAY 7 SAVED');
+      dChartDay1 = chartDay1[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay2 = chartDay2[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay3 = chartDay3[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay4 = chartDay4[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay5 = chartDay5[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay6 = chartDay6[0]['COUNT(VIS_ID)'].toDouble();
+      dChartDay7 = chartDay7[0]['COUNT(VIS_ID)'].toDouble();
     });
   }
   @override
@@ -183,7 +165,7 @@ class _HomePageViewState extends State<HomePageView> {
         Container(
           height: 250,
           color: Color(identidadColor('Gris')),
-          child: Graphic1(day1: chartDay1, day2: chartDay2,day3: chartDay3,day4: chartDay4,day5: chartDay5,day6: chartDay6,day7: chartDay7,),
+          child: Graphic1(day1: dChartDay1, day2: dChartDay2,day3: dChartDay3,day4: dChartDay4,day5: dChartDay5,day6: dChartDay6,day7: dChartDay7,),
         )
       ],
     );
