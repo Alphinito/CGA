@@ -9,7 +9,7 @@ validacionLogin(context, us, cl) async {
   try {
     var res = await http.get(Uri.http(globals.linkAPI, "log/$us/$cl"));
     if (res.statusCode == 200) {
-      if (res.body.length > 15) {
+      if (res.body.length > 10) {
         var jsonData = jsonDecode(res.body);
         List<dynamic> _user = jsonData;
         print(_user);
@@ -28,14 +28,13 @@ validacionLogin(context, us, cl) async {
         //globals.empLider = _user[0]['EMP_LIDER'];
         globals.empZona = _user[0]['EMP_ZONA'];
         globals.empCiudad = _user[0]['EMP_CIUDAD'];
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
       } else {
         respuesta(context, 'error', "Los datos son incorrectos", "Verifica tus datos y vuelve a intentarlo");
       }
     } else {
       respuesta(context, 'error', "Hubo un problema", "Verifica tu conexión a internet");}
   }catch (e){
-    print(e);
-    // respuesta(context, 'error', "No hubo respuesta", "$e");
+    respuesta(context, 'error', "No hubo respuesta", "$e");
   }
 }

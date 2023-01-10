@@ -4,7 +4,6 @@ import '../api/apiMethods.dart';
 import '../identidad/marca.dart';
 import '../logic/formularios.dart';
 import '../responses/status.dart';
-import '../data/globals.dart' as globals;
 
 class CustomSizedBox1 extends StatelessWidget {
   final String title;
@@ -94,7 +93,7 @@ planToReal(context, id) async {
     apiPUT(body, 'form-visitas/updateMAIN/$id');
     apiPOST(body2, "visitas-real");
     //---------------------------------------------------------------|RESULTADO|
-    Navigator.of(context).pop();
+    Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
     respuesta(
         context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
   } catch (err) {
@@ -117,7 +116,7 @@ realToSeguimiento(context, id) async {
     apiPUT(body, 'form-visitas/updateMAIN/$id');
     apiPOST(body2, "visitas-real");
     //---------------------------------------------------------------|RESULTADO|
-    Navigator.of(context).pop();
+    Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
     respuesta(
         context, 'ok', 'Echo!', 'El registro $id ha pasado a visita Real');
   } catch (err) {

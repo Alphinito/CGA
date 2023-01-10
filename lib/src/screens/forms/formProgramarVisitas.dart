@@ -116,11 +116,13 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
       var selectedTime = await GetTimePikerWiguet(_currentSelectedTimeInicio, 'Hora de inicio');
       setState(() {
         _currentSelectedTimeInicio = selectedTime;
+        setHoraInicio = _currentSelectedTimeInicio;
       });
     } else {
       var selectedTime = await GetTimePikerWiguet(_currentSelectedTimeFin,'Hora de finalización');
       setState(() {
         _currentSelectedTimeFin = selectedTime;
+        setHoraFin = _currentSelectedTimeFin;
       });
     }
   }
@@ -242,8 +244,8 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                   children: [
                     CalendarDatePicker(
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2021),
-                      lastDate: DateTime(2023),
+                      firstDate: DateTime(2022),
+                      lastDate: DateTime(2025),
                       onDateChanged: (date) {
                         setState(() {
                           setFecha = date;
@@ -266,7 +268,6 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                     callTimePiker('inicio');
                                     setState(() {
                                       _statusP4 = 'Activo';
-                                      setHoraInicio = _currentSelectedTimeInicio;
                                       habilitarButton();
                                     });
                                   },
@@ -286,7 +287,6 @@ class _FormProgramarVisitaState extends State<FormProgramarVisita> {
                                     callTimePiker('fin');
                                     setState(() {
                                       _statusP4 = 'Activo';
-                                      setHoraFin = _currentSelectedTimeFin;
                                       habilitarButton();
                                     });
                                   },

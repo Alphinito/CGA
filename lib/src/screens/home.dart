@@ -38,9 +38,10 @@ class _HomeState extends State<Home> {
   //CONTENEDOR GENERAL HOME
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 2,
       child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: const Color(0xFF0080C4),
             elevation: 0,
             title: Row(
@@ -63,15 +64,15 @@ class _HomeState extends State<Home> {
             bottom: const TabBar(tabs: [
               Tab(icon: Icon(Icons.home)),
               Tab(icon: Icon(Icons.receipt_long)),
-              Tab(icon: Icon(Icons.add_chart)),
-              Tab(icon: Icon(Icons.add_call))
+              //Tab(icon: Icon(Icons.add_chart)),
+              //Tab(icon: Icon(Icons.add_call))
             ]),
           ),
           body: TabBarView(children: [
             HomePageView(),
             HomeFormsView(),
-            const Icon(Icons.add_chart),
-            const Icon(Icons.add_call),
+            //const Icon(Icons.add_chart),
+            //const Icon(Icons.add_call),
           ])),
     );
   }

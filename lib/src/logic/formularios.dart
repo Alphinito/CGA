@@ -4,8 +4,6 @@ import 'package:http/http.dart' as http;
 import '../api/apiMethods.dart';
 import '../data/globals.dart' as globals;
 import '../responses/status.dart';
-import '../screens/HomeFormsView.dart';
-import '../screens/forms/seguimiento.dart';
 
 //-----------------------------------------------------------------------|GO TO|
 irFormularioProgramarVisita(context) {
@@ -42,7 +40,7 @@ enviarDatosDeFormulario(context,cliente, motivo, fecha, horaInicio, horaFin, obs
   };
   try{
     apiPOST(body, "form-visitas");
-    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
   }catch(err){
     return respuesta(context, 'error','Error', '$err');
@@ -85,7 +83,7 @@ enviarDatosDeFormularioReal(context,cliente, motivo, fecha, hora, observacion) a
     //--------------------------------------------------------------------------|POST VISITA REAL
     apiPOST(body2,"visitas-real");
     //--------------------------------------------------------------------------|RESULTADO CORRECTO
-    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
   }catch(err){//----------------------------------------------------------------|Captura de error
     print(err);
@@ -109,7 +107,7 @@ enviarDatosDeSeguimiento(context,SEG_VISITA, SEG_RESULTADO, SEG_RESULTADO_OTRO, 
   try{
     apiPUT(bodyPUT, 'visitas-real/updateFOCUS/$SEG_VISITA');
     apiPOST(bodyPOST, 'seguimiento');
-    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(context,'/home',(_) => false);
     return respuesta(context, 'ok','Guardado', 'Registro almacenado con exito');
   }catch(err){
     return respuesta(context, 'error','Error', '$err');

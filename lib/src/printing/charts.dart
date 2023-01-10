@@ -26,12 +26,10 @@ class Graphic1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(LineChartData(
         minX: 1,
-        maxX: 7,
         minY: 0,
-        maxY: 10,
         titlesData: FlTitlesData(
             show: true,
-            //topTitles: AxisTitles(drawBehindEverything: false),
+            topTitles: AxisTitles(drawBehindEverything: false),
             //rightTitles: AxisTitles(drawBehindEverything: false),
             leftTitles: AxisTitles(drawBehindEverything: false),
             bottomTitles: AxisTitles(drawBehindEverything: false),
@@ -45,16 +43,9 @@ class Graphic1 extends StatelessWidget {
             );
           },
           drawVerticalLine: true,
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(identidadColor('Primario Azul')),
-              strokeWidth: 0.1,
-            );
-          },
         ),
         borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: Color(identidadColor('Primario Azul')), width: 1),
+          show: false,
         ),
         lineBarsData: [
           LineChartBarData(
